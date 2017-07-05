@@ -156,3 +156,17 @@ def profile(request, id):
     context_dict['userprofile'] = up
 
     return render_to_response('website/profile.html', context_dict, context)
+
+def about(request):
+    template= loader.get_template('website/about.html')
+    context = {
+    }
+    return HttpResponse(template.render(context, request))
+
+@login_required
+def completeSurvey(request):
+    template= loader.get_template('website/submit_survey.html')
+    context = {
+    }
+    return HttpResponse(template.render(context, request))
+
