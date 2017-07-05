@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% extends 'website/base.html' %}
+
+{% block body %}
+    <div class="container" xmlns="http://www.w3.org/1999/html">
+        <div class="row">
+            {% if list_of_devices %}
+                {% for device in list_of_devices %}
+                    <div class="col-md-3">
+                        {% if forloop.counter|divisibleby:4 and not forloop.last%}
+                            </div><div class="row">
+                        {% endif %}
+                        <img src={{ device.imageUrl }} width=auto height=180>
+                        </br>
+                        {{ device.name }}
+                        </br>
+                        </br>
+                        {% for key,value in list_of_ratings.items %}
+                            {% if key == device.name %}
+                                <p>Usability:
+                                    {{ value.usability }}
+                                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                </p>
+                                <p>Retention: {{ value.retention }}</p>
+                                <p>Fun: {{ value.fun }}</p>
+                            {% endif %}
+                        {% endfor %}
+
+                    {% for i in "xxxxxx" %}
+                        </br>
+                    {% endfor %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

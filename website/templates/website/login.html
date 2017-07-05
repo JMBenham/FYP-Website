@@ -1,0 +1,33 @@
+{% extends 'website/base.html' %}
+<!DOCTYPE html>
+<html>
+    {% block body %}
+    <div class="container">
+        <h3>Login</h3><br />
+
+        <form id="login_form" method="post" action="/login/">
+            {% csrf_token %}
+
+            <label>Username</label>
+            <input type="text" class="form-control" name="username" placeholder="Enter username" value="" size="50" />
+
+            <br />
+            <label>Password</label>
+            <input type="password" class="form-control" name="password" placeholder="Enter password" value="" size="50" />
+            <br />
+            
+            {% if text %}
+
+                <strong>Please enter a valid username or password.</strong>
+                <br />
+            {% endif %}
+
+            <button type="submit" class="btn btn-default">Submit</button>
+            
+        </form>
+        </br>
+        <a class="btn btn-default" href = "/register/" style="background-color: #1396D7; color:white">Register Here</a>
+        <a class="btn btn-default" href = "/password/reset" style="background-color: #1396D7; color:white">Forgotten Your Password?</a>
+    </div>
+    
+    {% endblock %}
