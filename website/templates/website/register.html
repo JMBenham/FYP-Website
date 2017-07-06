@@ -1,26 +1,42 @@
-{% extends "website/base.html" %}
+{% extends 'website/base.html' %}
+{% load crispy_forms_tags %}
 
 
 {% block body %}
-<div class="container">
-    <h3>Register</h3>
+    <div class="container">
+        <br class="row">
+            <br class="col">
 
-        {% if registered %}
-            <strong>Thank you for registering! You will now be able to log in.</strong><br />
-            <a href="/">Return to your calendar.</a><br />
 
-        {% else %}
-        <form class = "form-horizontal" id="user_form" method="post" action="/register/"
-                enctype="multipart/form-data">
+                {% if registered %}
+                    <strong>Thank you for registering! You will now be able to log in.</strong><br />
+                    <a href="/">Return to your calendar.</a><br />
 
-            {% csrf_token %}
+                {% else %}
+                <form class = "form-horizontal" id="user_form" method="post" action="/register/"
+                        enctype="multipart/form-data">
 
-            {{ user_form.as_p }}
-            {{ profile_form.as_p }}
-         
-            <!-- Provide a button to click to submit the form. -->
-            <button type="submit" class="btn btn-default">Submit</button>
-        </form>
-        {% endif %}
-</div>
+                    {% csrf_token %}
+
+                    {{ user_form | crispy }}
+
+                    <h4>Filling in these questions will allow us to customise our suggestions.</h4>
+
+                    {{ profile_form | crispy }}
+
+
+                    <input class="btn btn-primary btn-large" type="submit" value="Submit"/>
+                </form>
+
+                {% endif %}
+                </br>
+                </br>
+                </br>
+                </br>
+                </br>
+                </br>
+            </div>
+
+        </div>
+    </div>
 {% endblock %}

@@ -42,13 +42,13 @@ def register(request):
     # Get the request's context
     context = RequestContext(request)
 
-    # Boolean value to check whether the registration was successful
+    # Boolean value to check whether the customRegistration was successful
     registered = False
 
     # Only process data if the request is a POST method
     if request.method == 'POST':
         # Attempt to take the information from the form
-        #TODO create the forms for user registration
+        #TODO create the forms for user customRegistration
         user_form = UserForm(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
 
@@ -69,7 +69,7 @@ def register(request):
 
             profile.save()
 
-            # Update our variable to tell the template registration was successful.
+            # Update our variable to tell the template customRegistration was successful.
             registered = True
 
         # Invalid form or forms - mistakes or something else?
@@ -86,7 +86,7 @@ def register(request):
 
     # Render the template depending on the context.
     return render_to_response(
-        'website/register.html',
+        'website/registerCrispy.html',
         {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
         context)
 

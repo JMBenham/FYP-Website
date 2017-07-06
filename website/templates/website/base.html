@@ -13,7 +13,7 @@
 </head>
 <body>
     <header>
-        <div class="navbar navbar-default navbar-static-top">
+        <div class="navbar navbar-inverse navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -27,13 +27,15 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
                         <li class="active"><a href="/">Home</a></li>
-                        <li><a href={% url 'completesurvey' %}>Submit New Survey</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href={% url 'completesurvey' %}>Submit New Survey</a></li>
+                        {% endif %}
                         <li><a href={% url 'about' %}>About</a></li>
 
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         {% if user.is_authenticated %}
-                            <li><a href={% url 'profile' user.id %}>Welcome, {{ user.first_name }}</a></li>
+                            <li><p class="navbar-text">Welcome, <a class="navbar-link" href={% url 'profile' user.id %}>{{ user.first_name }} {{ user.last_name }}</a></p></li>
                             <li><a href={% url 'logout' %}>Logout</a></li>
                         {% else %}
                             <li><a href={% url 'login' %}>Login</a></li>
@@ -52,12 +54,14 @@
 
     <footer>
         <div class= "navbar navbar-inverse navbar-fixed-bottom" role="navigation">
-            <div class="navbar-text pull-left">
-                What do I include in the footer?
-            </div>
-            <!--Below is the copyright information for the site. You can fill in your own here.-->
-            <div class="navbar-text pull-left">
-                &copy; Jarred Benham
+            <div class="container">
+                <div class="navbar-text pull-left">
+                    Electrical Engineering FYP
+                </div>
+                <!--Below is the copyright information for the site. You can fill in your own here.-->
+                <div class="navbar-text pull-right">
+                    &copy; Jarred Benham
+                </div>
             </div>
         </div>
     </footer>
