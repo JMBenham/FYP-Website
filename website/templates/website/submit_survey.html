@@ -1,7 +1,15 @@
 {% extends 'website/base.html' %}
+{% load crispy_forms_tags %}
 
 {% block body %}
     <div class="container">
-        <h1>Submit Survey</h1>
+        {% crispy survey_form %}
+
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
     </div>
 {% endblock %}

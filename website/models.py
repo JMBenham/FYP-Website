@@ -85,20 +85,27 @@ class Profile(models.Model):
         return self.user.first_name + " " + self.user.last_name
 
 class DeviceQuestionnaire(models.Model):
+    INPUT_CHOICES = (
+        (1, "Strongly Disagree"),
+        (2, "Disagree"),
+        (3, "Strongly Neutral"),
+        (4, "Agree"),
+        (5, "Strongly Agree"),
+    )
     user = models.ForeignKey(Profile)
     hardware = models.ForeignKey(Hardware, on_delete=models.CASCADE, null=True)
-    question1 = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
-    question2 = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
-    question3 = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
-    question4 = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
-    question5 = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
-    question6 = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
-    question7 = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
-    question8 = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
-    question9 = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
-    question10 = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
-    question11 = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
-    question12 = models.PositiveIntegerField(default=1, validators=[MaxValueValidator(5), MinValueValidator(1)])
+    question1 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question2 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question3 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question4 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question5 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question6 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question7 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question8 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question9 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question10 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question11 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question12 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
 
 
     def __unicode__(self):

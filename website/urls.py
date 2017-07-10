@@ -6,8 +6,9 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^register/$', views.register, name='register'),
     url(r'^about/$', views.about, name='about'),
-    url(r'^completesurvey/$', views.completeSurvey, name='completesurvey'),
+    url(r'^completesurvey/$', views.complete_survey, name='completesurvey'),
     url(r'^profile/(?P<id>\d+)/$', views.profile, name='profile'),
+    url(r'^hardware/(?P<id>\d+)/$', views.device_profile, name='device_profile'),
     url(r'^login/$',
         auth_views.LoginView.as_view(template_name='website/login.html'),
         name='login'),
@@ -31,5 +32,4 @@ urlpatterns = [
     url(r'^password/change/done$',
         auth_views.PasswordChangeDoneView.as_view(template_name='customRegistration/password_change_done.html'),
         name='password_change_done'),
-
 ]

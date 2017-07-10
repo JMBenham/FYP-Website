@@ -6,8 +6,8 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.admin import User
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Hardware, Profile, DeviceQuestionnaire
-from .forms import UserForm, UserProfileForm
-from django.shortcuts import render, render_to_response
+from .forms import UserForm, UserProfileForm, QuestionnaireForm
+from django.shortcuts import render, render_to_response, redirect
 
 
 # Create your views here.
@@ -37,7 +37,6 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
-# This is the main view, which will be the calendar in weekly view
 def register(request):
     # Get the request's context
     context = RequestContext(request)
@@ -86,7 +85,7 @@ def register(request):
 
     # Render the template depending on the context.
     return render_to_response(
-        'website/registerCrispy.html',
+        'website/register_crispy.html',
         {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
         context)
 
@@ -129,10 +128,6 @@ def user_login(request):
         return render_to_response('website/login.html', {}, context)
 
 @login_required
-def restricted(request):
-    return HttpResponse("Since you're logged in, you can see this text!")
-
-@login_required
 def user_logout(request):
     # Since we know the user is logged in, we can now just log them out.
     logout(request)
@@ -157,6 +152,14 @@ def profile(request, id):
 
     return render_to_response('website/profile.html', context_dict, context)
 
+def device_profile(request, id):
+    hardware = Hardware.objects.get(pk = id)
+    template= loader.get_template('website/device_profile.html')
+    context = {
+        'device': hardware,
+    }
+    return HttpResponse(template.render(context, request))
+
 def about(request):
     template= loader.get_template('website/about.html')
     context = {
@@ -164,9 +167,39 @@ def about(request):
     return HttpResponse(template.render(context, request))
 
 @login_required
-def completeSurvey(request):
+def complete_survey(request):
+    # Only process data if the request is a POST method
+    if request.method == 'POST':
+        # Attempt to take the information from the form
+        survey_form = QuestionnaireForm(data=request.POST)
+
+
+        if survey_form.is_valid():
+            # Now sort out the UserProfile instance.
+            # Since we need to set the user attribute ourselves, we set commit=False.
+            # This delays saving the model until we're ready to avoid integrity problems.
+            survey = survey_form.save(commit=False)
+            survey.user = Profile.objects.get(user=request.user)
+
+            survey.save()
+
+            return redirect('index')
+
+        # Invalid form or forms - mistakes or something else?
+        # Print problems to the terminal.
+        # They'll also be shown to the user.
+        else:
+            print survey_form.errors
+
+    # Not a HTTP POST, the form is rendered using the form instance
+    # This form is blank, ready for user input.
+    else:
+        survey_form = QuestionnaireForm()
+
     template= loader.get_template('website/submit_survey.html')
     context = {
+        'survey_form': survey_form,
     }
     return HttpResponse(template.render(context, request))
+
 

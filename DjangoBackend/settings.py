@@ -25,7 +25,7 @@ SECRET_KEY = '5w&wk4xoi5qxd$=93bcl49n!s95+a+5an4i!&ooi*-^s3$iq@n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
