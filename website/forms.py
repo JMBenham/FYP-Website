@@ -1,6 +1,6 @@
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, ButtonHolder, Fieldset, Field
+from crispy_forms.layout import Submit, Layout, ButtonHolder, Fieldset, Field, Button, HTML
 from crispy_forms.bootstrap import Tab, TabHolder, InlineCheckboxes, InlineRadios
 from website.models import Profile, Hardware, Subject, DeviceQuestionnaire
 from django.contrib.auth.admin import User
@@ -69,6 +69,9 @@ class QuestionnaireForm(forms.ModelForm):
                 'What are your experiences with tech hardware?',
                 'hardware',
             ),
+            HTML('<button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#newHardwareModal" data-whatever="@mdo">Add new hardware</button>'),
+            HTML('</br>'),
+            HTML('</br>'),
             TabHolder(
                 Tab(
                     'Usability',
@@ -111,9 +114,45 @@ class QuestionnaireForm(forms.ModelForm):
         label = "How easy was it actually to use?",
         choices=DeviceQuestionnaire.INPUT_CHOICES
     )
-
-
     class Meta:
         model = DeviceQuestionnaire
         exclude = ('user',)
 
+class SubjectForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(SubjectForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = "id-subject_form"
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-3'
+        self.helper.field_class = 'col-md-7'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'new_subject'
+
+    class Meta:
+        model = Subject
+        fields = ('subject',)
+
+class HardwareForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(HardwareForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = "id-hardware_form"
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-3'
+        self.helper.field_class = 'col-md-7'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'completesurvey'
+
+        self.helper.layout = Layout(
+            Fieldset('',
+                     'name'),
+
+            ButtonHolder(
+                Submit('submit', 'Submit', css_class='button white')
+            )
+        )
+
+    class Meta:
+        model = Hardware
+        fields = ('name',)

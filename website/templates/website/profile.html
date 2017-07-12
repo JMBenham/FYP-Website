@@ -2,6 +2,20 @@
 
 {% block body %}
     <div class="container">
-        <h1>Profile</h1>
+        <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+
+        <p> State: {{ userprofile.state }} </p>
+        <p> Year Levels: {{ userprofile.yearLevels }} </p>
+        <p> Subjects: {{ userprofile.subjectsTaught }} </p>
+        <p> Class Size: {{ userprofile.classSize }} </p>
+        <p> Technology Background: {{ userprofile.technologyBackground }} </p>
+        <p> Programming Background: {{ userprofile.programmingBackground }} </p>
+        <p> Hardware you use: {{ userprofile.hardware_devices }} </p>
+
+        </br>
+        <h6>You have submitted questionnaires for the following hardware.</h6>
+        {% for answer in questionnaires %}
+            <p>{{ answer.hardware }}</p>
+        {% endfor %}
     </div>
 {% endblock %}

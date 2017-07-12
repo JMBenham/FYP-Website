@@ -6,7 +6,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.admin import User
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Hardware, Profile, DeviceQuestionnaire
-from .forms import UserForm, UserProfileForm, QuestionnaireForm
+from .forms import UserForm, UserProfileForm, QuestionnaireForm, SubjectForm, HardwareForm
 from django.shortcuts import render, render_to_response, redirect
 
 
@@ -146,11 +146,15 @@ def profile(request, id):
     except:
         up = None
 
-    context_dict['user'] = request.user
-    context_dict['remoteuser'] = u
-    context_dict['userprofile'] = up
-
-    return render_to_response('website/profile.html', context_dict, context)
+    submittedQuestionnaires = DeviceQuestionnaire.objects.filter(user=up)
+    template= loader.get_template('website/profile.html')
+    context = {
+        'user': request.user,
+        'remoteuser': u,
+        'userprofile': up,
+        'questionnaires': submittedQuestionnaires
+    }
+    return HttpResponse(template.render(context, request))
 
 def device_profile(request, id):
     hardware = Hardware.objects.get(pk = id)
@@ -172,7 +176,7 @@ def complete_survey(request):
     if request.method == 'POST':
         # Attempt to take the information from the form
         survey_form = QuestionnaireForm(data=request.POST)
-
+        hardware_form = HardwareForm(data=request.POST)
 
         if survey_form.is_valid():
             # Now sort out the UserProfile instance.
@@ -184,7 +188,9 @@ def complete_survey(request):
             survey.save()
 
             return redirect('index')
-
+        elif hardware_form.is_valid():
+            hardware_form.save()
+            return redirect('completesurvey')
         # Invalid form or forms - mistakes or something else?
         # Print problems to the terminal.
         # They'll also be shown to the user.
@@ -195,11 +201,26 @@ def complete_survey(request):
     # This form is blank, ready for user input.
     else:
         survey_form = QuestionnaireForm()
+        hardware_form = HardwareForm()
 
     template= loader.get_template('website/submit_survey.html')
     context = {
         'survey_form': survey_form,
+        'hardware_form': hardware_form,
     }
     return HttpResponse(template.render(context, request))
 
+@login_required
+def new_subject(request):
+    if request.method =='POST':
+        subject_form = SubjectForm
+
+        if subject_form.is_valid():
+            subject = subject_form.save()
+
+        else:
+            print subject_form.errors
+
+    else:
+        subject_form = SubjectForm()
 
