@@ -19,7 +19,16 @@ class UserForm(forms.ModelForm):
         self.helper.form_action = 'register'
         self.helper.form_tag = False
 
-
+        self.helper.layout = Layout(
+            Fieldset(
+                'Your details',
+                'first_name',
+                'last_name',
+                'username',
+                'email',
+                'password',
+            )
+        )
     first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter first name'}))
     last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter surname'}))
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter username'}))
@@ -41,6 +50,20 @@ class UserProfileForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_action = 'register'
         self.helper.form_tag = False
+
+        self.helper.layout = Layout(
+            Fieldset(
+                'Some information about your technology usage: ',
+                'state',
+                'yearLevels',
+                'subjectsTaught',
+                'classSize',
+                'technologyBackground',
+                'programmingBackground',
+                'hardware_devices',
+
+            ),
+        )
 
     state = forms.ChoiceField(label="Which state do you primarily teach in?", choices=Profile.STATE_CHOICES)
     yearLevels = forms.ChoiceField(label="What year levels do you teach?", choices=Profile.YEAR_LEVEL_CHOICES, widget=forms.CheckboxSelectMultiple)
@@ -127,7 +150,16 @@ class SubjectForm(forms.ModelForm):
         self.helper.label_class = 'col-md-3'
         self.helper.field_class = 'col-md-7'
         self.helper.form_method = 'post'
-        self.helper.form_action = 'new_subject'
+        self.helper.form_action = 'completesurvey'
+
+        self.helper.layout = Layout(
+            Fieldset('',
+                     'subject'),
+
+            ButtonHolder(
+                Submit('submit', 'Submit', css_class='button white')
+            )
+        )
 
     class Meta:
         model = Subject

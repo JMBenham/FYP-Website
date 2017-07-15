@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.admin import User
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Hardware, Profile, DeviceQuestionnaire
+from .models import Hardware, Profile, DeviceQuestionnaire, Subject
 from .forms import UserForm, UserProfileForm, QuestionnaireForm, SubjectForm, HardwareForm
 from django.shortcuts import render, render_to_response, redirect
 
@@ -50,6 +50,8 @@ def register(request):
         #TODO create the forms for user customRegistration
         user_form = UserForm(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
+        subject_form = SubjectForm(data=request.POST)
+        hardware_form = HardwareForm(data=request.POST)
 
         if user_form.is_valid() and profile_form.is_valid():
             # Save the user's form data to the database
@@ -71,6 +73,16 @@ def register(request):
             # Update our variable to tell the template customRegistration was successful.
             registered = True
 
+        elif subject_form.is_valid():
+            subject = subject_form.save()
+            return redirect('register')
+
+        elif hardware_form.is_valid():
+            hardware = hardware_form.save(commit=False)
+            hardware.imageUrl = "https://upload.wikimedia.org/wikipedia/commons/3/33/White_square_with_question_mark.png"
+
+            hardware.save()
+            return redirect('register')
         # Invalid form or forms - mistakes or something else?
         # Print problems to the terminal.
         # They'll also be shown to the user.
@@ -80,14 +92,27 @@ def register(request):
     # Not a HTTP POST, the form is rendered using the form instance
     # This form is blank, ready for user input.
     else:
+        subjects = Subject.objects.all()
+        hardware = Hardware.objects.all()
         user_form = UserForm()
         profile_form = UserProfileForm()
+        hardware_form = HardwareForm()
+        subject_form = SubjectForm()
+
+        hardware_form.helper.form_action = 'register'
+        subject_form.helper.form_action = 'register'
 
     # Render the template depending on the context.
-    return render_to_response(
-        'website/register_crispy.html',
-        {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
-        context)
+    template= loader.get_template('website/register_crispy.html')
+    context = {
+        'subjects': subjects,
+        'hardware': hardware,
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'subject_form': subject_form,
+        'hardware_form': hardware_form,
+    }
+    return HttpResponse(template.render(context, request))
 
 def user_login(request):
     # Like before, obtain the context for the user's request.
@@ -189,7 +214,10 @@ def complete_survey(request):
 
             return redirect('index')
         elif hardware_form.is_valid():
-            hardware_form.save()
+            hardware = hardware_form.save(commit =False)
+            hardware.imageUrl = "https://upload.wikimedia.org/wikipedia/commons/3/33/White_square_with_question_mark.png"
+
+            hardware.save()
             return redirect('completesurvey')
         # Invalid form or forms - mistakes or something else?
         # Print problems to the terminal.
@@ -209,18 +237,4 @@ def complete_survey(request):
         'hardware_form': hardware_form,
     }
     return HttpResponse(template.render(context, request))
-
-@login_required
-def new_subject(request):
-    if request.method =='POST':
-        subject_form = SubjectForm
-
-        if subject_form.is_valid():
-            subject = subject_form.save()
-
-        else:
-            print subject_form.errors
-
-    else:
-        subject_form = SubjectForm()
 

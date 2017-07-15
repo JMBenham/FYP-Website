@@ -4,7 +4,32 @@
 
 {% block body %}
     <div class="container">
-        <h4>Registration</h4>
+        <div class="row">
+            <h3>Registration</h3>
+            <h5>Before filling out this form, check here to ensure that all the devices you use and subjects you teach are here. If they aren't please use the buttons to add them.</h5>
+            <div class="col-md-6">
+                <h4>Subjects</h4>
+                <ul>
+                {% for subject in subjects %}
+                    <li>
+                        {{ subject.subject }}
+                    </li>
+                {% endfor %}
+                </ul>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newSubjectModal" data-whatever="@mdo">Add new subject</button>
+            </div>
+            <div class="col-md-6">
+                <h4>Hardware</h4>
+                <ul>
+                {% for device in hardware %}
+                    <li>
+                        {{ device.name }}
+                    </li>
+                {% endfor %}
+                </ul>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newHardwareModal" data-whatever="@mdo">Add new hardware</button>
+            </div>
+        </div>
         <form action="{% url 'register' %}" class="form-horizontal" method="post">
             {% crispy user_form %}
             {% crispy profile_form %}
@@ -22,6 +47,32 @@
         </form>
         </br>
         </br>
+        <div class="modal fade" id="newHardwareModal" tabindex="-1" role="dialog" aria-labelledby="newHardwareModal">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="newHardwareModal">Add a new hardware device</h4>
+              </div>
+              <div class="modal-body">
+                {% crispy hardware_form %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="newSubjectModal" tabindex="-1" role="dialog" aria-labelledby="newSubjectModal">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="newSubjectModal">Add a new subject</h4>
+              </div>
+              <div class="modal-body">
+                {% crispy subject_form %}
+              </div>
+            </div>
+          </div>
+        </div>
     </br>
     </br>
     </br>
