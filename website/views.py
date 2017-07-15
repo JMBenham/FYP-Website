@@ -47,7 +47,6 @@ def register(request):
     # Only process data if the request is a POST method
     if request.method == 'POST':
         # Attempt to take the information from the form
-        #TODO create the forms for user customRegistration
         user_form = UserForm(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
         subject_form = SubjectForm(data=request.POST)
@@ -69,6 +68,7 @@ def register(request):
             profile.user = user
 
             profile.save()
+            profile_form.save_m2m()
 
             # Update our variable to tell the template customRegistration was successful.
             registered = True
@@ -92,8 +92,6 @@ def register(request):
     # Not a HTTP POST, the form is rendered using the form instance
     # This form is blank, ready for user input.
     else:
-        subjects = Subject.objects.all()
-        hardware = Hardware.objects.all()
         user_form = UserForm()
         profile_form = UserProfileForm()
         hardware_form = HardwareForm()
@@ -105,8 +103,8 @@ def register(request):
     # Render the template depending on the context.
     template= loader.get_template('website/register_crispy.html')
     context = {
-        'subjects': subjects,
-        'hardware': hardware,
+        'subjects': Subject.objects.all(),
+        'hardware': Hardware.objects.all(),
         'user_form': user_form,
         'profile_form': profile_form,
         'subject_form': subject_form,
@@ -172,12 +170,22 @@ def profile(request, id):
         up = None
 
     submittedQuestionnaires = DeviceQuestionnaire.objects.filter(user=up)
+    subjects = up.subjectsTaught.all()
+    hardware = up.hardware_devices.all()
+    sizeClass = dict(up.CLASS_SIZE_CHOICES)[up.classSize]
+    techBackground = dict(up.TECH_BACKGROUND_CHOICES)[up.technologyBackground]
+    programmingBackground = dict(up.PROGRAMMING_BACKGROUND_CHOICES)[up.programmingBackground]
     template= loader.get_template('website/profile.html')
     context = {
         'user': request.user,
         'remoteuser': u,
         'userprofile': up,
-        'questionnaires': submittedQuestionnaires
+        'questionnaires': submittedQuestionnaires,
+        'subjectsTaught': subjects,
+        'hardwareUsed': hardware,
+        'class': sizeClass,
+        'techBackground': techBackground,
+        'programmingBackground': programmingBackground,
     }
     return HttpResponse(template.render(context, request))
 
