@@ -2,30 +2,53 @@
 
 {% block body %}
     <div class="container">
-        <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+        {% if remoteuser == user %}
+            <h1>{{ user.first_name }} {{ user.last_name }}</h1>
 
-        <p> State: {{ userprofile.state }} </p>
-        <p> Year Levels: {{ userprofile.yearLevels }} </p>
-        <h4>You teach the following subjects.</h4>
-        <ul>
-            {% for subject in subjectsTaught %}
-                <li>{{ subject.subject }}</li>
-            {% endfor %}
-        </ul>
-        <p> Class Size: {{ class }} </p>
-        <p> Technology Background: {{ techBackground }} </p>
-        <p> Programming Background: {{ programmingBackground }} </p>
-        <h4>You use the following hardware.</h4>
-        <ul>
-            {% for device in hardwareUsed %}
-                <li>{{ device.name }}</li>
-            {% endfor %}
-        </ul>
+            <p> State: {{ userprofile.state }} </p>
+            <p> Year Levels: {{ userprofile.yearLevels }} </p>
+            <h4>You teach the following subjects.</h4>
+            <ul>
+                {% for subject in subjectsTaught %}
+                    <li>{{ subject.subject }}</li>
+                {% endfor %}
+            </ul>
+            <p> Class Size: {{ class }} </p>
+            <p> Technology Background: {{ techBackground }} </p>
+            <p> Programming Background: {{ programmingBackground }} </p>
+            <h4>You use the following hardware.</h4>
+            <ul>
+                {% for device in hardwareUsed %}
+                    <li>{{ device.name }}</li>
+                {% endfor %}
+            </ul>
 
-        </br>
-        <h4>You have submitted questionnaires for the following hardware.</h4>
-        {% for answer in questionnaires %}
-            <p>{{ answer.hardware }}</p>
-        {% endfor %}
+            </br>
+            <h4>You have submitted questionnaires for the following hardware.</h4>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                {% for answer in questionnaires %}
+                      <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                          <h4 class="panel-title">
+                            {{ answer.hardware }}
+                            <a class="btn btn-default collapsed pull-right" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ answer.id }}" aria-expanded="true" aria-controls="collapse{{ answer.id }}">
+                                <span class="caret"></span>
+                            </a>
+                            <br></br>
+                          </h4>
+                        </div>
+                        <div id="collapse{{ answer.id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapse{{ answer.id }}">
+                          <div class="panel-body">
+                              <p>Question 1: {{ answer.question1 }}</p>
+                              <a class="btn btn-danger" href="{% url 'delete_survey' id=answer.id %}">Delete</a>
+                          </div>
+                        </div>
+                      </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <h5>You are not authorised to view this page.</h5>
+        {% endif %}
+
     </div>
 {% endblock %}

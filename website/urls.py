@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^completesurvey/$', views.complete_survey, name='completesurvey'),
     url(r'^profile/(?P<id>\d+)/$', views.profile, name='profile'),
     url(r'^hardware/(?P<id>\d+)/$', views.device_profile, name='device_profile'),
+    url(r'^deletesurvey/(?P<id>\d+)/$', views.delete_survey, name='delete_survey'),
     url(r'^login/$',
         auth_views.LoginView.as_view(template_name='website/login.html'),
         name='login'),

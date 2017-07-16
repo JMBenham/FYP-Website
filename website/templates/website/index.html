@@ -7,33 +7,28 @@
             {% if list_of_devices %}
                 {% for device in list_of_devices %}
                     <div class="col-md-3">
-                        <!--
-                        {% if forloop.counter|divisibleby:4%}
-
-                        {% endif %}
-                        -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">{{ device.name }}</h3>
-                                </div>
-                                <div class="panel-body">
-                                    <a href="#">
-                                        <img src={{ device.imageUrl }} width=70% height=auto>
-                                    </a>
-                                    </br>
-                                    </br>
-                                    {% for key,value in list_of_ratings.items %}
-                                        {% if key == device.name %}
-                                            <p>Usability: {{ value.usability }}
-                                            </p>
-                                            <p>Retention: {{ value.retention }}</p>
-                                            <p>Fun: {{ value.fun }}</p>
-                                        {% endif %}
-                                    {% endfor %}
-                                <a href="{% url 'device_profile'  device.id %}">More Information</a>
-                                </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">{{ device.name }}</h3>
+                            </div>
+                            <div class="panel-body">
+                                <a href="#">
+                                    <img src="{{ device.imageUrl }}" class="img-thumbnail">
+                                </a>
+                                </br>
+                                </br>
+                                {% for key,value in list_of_ratings.items %}
+                                    {% if key == device.name %}
+                                        <p>Usability: {{ value.usability }}
+                                        </p>
+                                        <p>Retention: {{ value.retention }}</p>
+                                        <p>Fun: {{ value.fun }}</p>
+                                    {% endif %}
+                                {% endfor %}
+                            <a href="{% url 'device_profile'  device.id %}">More Information</a>
                             </div>
                         </div>
+                    </div>
                 {% endfor %}
             {% endif %}
         </div>

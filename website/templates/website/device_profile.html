@@ -2,10 +2,29 @@
 
 {% block body %}
     <div class="container">
-        <h1>Device Profile</h1>
-
         <h3>{{ device.name }}</h3>
     
-        <img src={{ device.imageUrl }}>
+        <img src={{ device.imageUrl }} width=50%>
+
+        <br></br>
+        <h4>These surveys have been filled out for the {{ device.name }}</h4>
+        {% for response in surveys %}
+            <div class="row">
+                <div class="col-md-6">
+                {{ response.user }}
+                </div>
+            </div>
+            <div class = "row">
+                <div class="col-md-2">
+                    <p>Question 1: {{ response.question1 }}</p>
+                </div>
+                <div class="col-md-2">
+                    <p>Question 2: {{ response.question2 }}</p>
+                </div>
+                <div class="col-md-2">
+                    <p>Question 3: {{ response.question3 }}</p>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

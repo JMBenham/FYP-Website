@@ -191,9 +191,11 @@ def profile(request, id):
 
 def device_profile(request, id):
     hardware = Hardware.objects.get(pk = id)
+    questionnaires = DeviceQuestionnaire.objects.filter(hardware=hardware)
     template= loader.get_template('website/device_profile.html')
     context = {
         'device': hardware,
+        'surveys':questionnaires,
     }
     return HttpResponse(template.render(context, request))
 
@@ -245,4 +247,16 @@ def complete_survey(request):
         'hardware_form': hardware_form,
     }
     return HttpResponse(template.render(context, request))
+
+@login_required()
+def delete_survey(request, id):
+    deviceSurvey = DeviceQuestionnaire.objects.get(pk=id)
+    user = request.user
+
+    print deviceSurvey.user
+    print user
+    if deviceSurvey.user.id == user.id:
+        deviceSurvey.delete()
+
+    return redirect('profile', id=user.id)
 
