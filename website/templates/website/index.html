@@ -14,7 +14,10 @@
                     <span class="icon-bar"></span>
                     </button>
                   <a class="navbar-brand navbar-brand-logo" href="/">
-                      <div class="brand">FYP Website</div>
+                      <div class="logo" style="border-radius: 0%; border: 0px">
+                          <img src="{% static "website/img/fyp_logo.png" %}" height="60" width="60">
+                      </div>
+                      <div class="brand"> FYP Website</div>
                   </a>
                 </div>
                 <div class="collapse navbar-collapse" id="main-menu">
@@ -76,6 +79,7 @@
 
 {% block header_background %}
         <div class="blurred-container">
+            <div class="motto">Find Your Tech Here</div>
             <div class="img-src" style="background-image: url({% static "website/img/programBG.jpg" %}); background-position: bottom"></div>
         </div>
 {% endblock %}
