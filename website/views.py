@@ -79,6 +79,7 @@ def register(request):
 
         elif hardware_form.is_valid():
             hardware = hardware_form.save(commit=False)
+            hardware.name = hardware_form.name.title()
             hardware.imageUrl = "https://upload.wikimedia.org/wikipedia/commons/3/33/White_square_with_question_mark.png"
 
             hardware.save()

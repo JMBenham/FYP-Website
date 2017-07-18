@@ -1,10 +1,11 @@
 {% extends 'website/base.html' %}
 
 {% load static %}
+{% load website_extras %}
 
 {% block navbar %}
     <nav class="navbar navbar-default navbar-fixed-top navbar-transparent" role="navigation"> <!--<div class="navbar navbar-inverse navbar-static-top">-->
-            <div class="container">
+            <div class="container" style="padding-top: 0px">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
@@ -80,7 +81,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container" xmlns="http://www.w3.org/1999/html">
+    <div class="container" style="padding-top: 50px" xmlns="http://www.w3.org/1999/html">
         <div class="row">
             {% if list_of_devices %}
                 {% for device in list_of_devices %}
@@ -89,18 +90,28 @@
                             <div class="panel-heading">
                                 <h3 class="panel-title">{{ device.name }}</h3>
                             </div>
-                            <div class="panel-body">
-                                <a href="#">
+                            <div class="panel-body" >
+                                <a href="{% url 'device_profile'  device.id %}">
                                     <img src="{{ device.imageUrl }}" class="img-thumbnail">
                                 </a>
-                                </br>
-                                </br>
+                                <br></br>
                                 {% for key,value in list_of_ratings.items %}
                                     {% if key == device.name %}
-                                        <p>Usability: {{ value.usability }}
+                                        <p>Usability:
+                                            {% for i in value.usability|get_range %}
+                                                <i class="fa fa-star"></i>
+                                            {% endfor %}
                                         </p>
-                                        <p>Retention: {{ value.retention }}</p>
-                                        <p>Fun: {{ value.fun }}</p>
+                                        <p>Retention:
+                                            {% for i in value.retention|get_range %}
+                                                <i class="fa fa-star"></i>
+                                            {% endfor %}
+                                        </p>
+                                        <p>Fun:
+                                            {% for i in value.fun|get_range %}
+                                                <i class="fa fa-star"></i>
+                                            {% endfor %}
+                                        </p>
                                     {% endif %}
                                 {% endfor %}
                             <a href="{% url 'device_profile'  device.id %}">More Information</a>
@@ -111,7 +122,7 @@
             {% endif %}
         </div>
         <div class="row">
-            Create an account in order to submit surveys. An account also allows you to filter results based on your specific scenario
+            <p>Create an account in order to submit surveys. An account also allows you to filter results based on your specific scenario</p>
         </div>
     </div>
 
