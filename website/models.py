@@ -9,12 +9,32 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 
 class Subject(models.Model):
+    """
+    Defines the subject model. Creates a new table in the database so new subjects can be always updated.
+
+    **Attributes**
+
+    subject
+        The name of the subject.
+    """
+
     subject = models.CharField(max_length=50)
 
     def __unicode__(self):
         return self.subject
 
 class Hardware(models.Model):
+    """
+    Defines the hardware model.
+
+    **Attributes**
+
+    name
+        The name of the subject.
+
+    imageUrl
+        Image associated with the hardware.
+    """
     name = models.CharField(max_length=150)
     imageUrl = models.CharField(max_length=300, default="https://upload.wikimedia.org/wikipedia/commons/f/f8/Question_mark_alternate.svg")
 
@@ -25,6 +45,28 @@ class Hardware(models.Model):
         return self.name
 
 class Profile(models.Model):
+    """
+    Extension of the built in Django user class. This model is used to save the personal questionnaire for each profile.
+
+    **Attributes**
+
+    user
+        One-To-One relationship with default django user model.
+    state
+        The state in which the teacher works.
+    yearLevels
+        The year levels that the teacher teaches.
+    subjectsTaught
+        The subjects that the teacher teaches. Many-To-Many field with :class: 'Subject'
+    classSize
+        The class size the teacher normally teaches.
+    technologyBackground
+        The technology background of the teacher.
+    programmingBackground
+        The programming background of the teacher.
+    hardware_devices
+        A list of the hardware devices used by the teacher. Many-To-Many field with .. py:class: 'Hardware'
+    """
     STATE_CHOICES = (
         ('VIC', 'Victoria'),
         ('ACT', 'Australian Capital Territory'),
@@ -85,6 +127,21 @@ class Profile(models.Model):
         return self.user.first_name + " " + self.user.last_name
 
 class DeviceQuestionnaire(models.Model):
+    """
+        Model to create and store the questionnaire on a per device basis.
+
+        **Attributes**
+
+        *user*
+            ForeignKey relationship with logged in user.
+
+        *hardware*
+            ForeignKey relationship with the hardware being evaluated.
+
+        *question1*
+            Question 1
+
+        """
     INPUT_CHOICES = (
         (1, "Strongly Disagree"),
         (2, "Disagree"),

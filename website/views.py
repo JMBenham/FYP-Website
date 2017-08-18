@@ -38,6 +38,18 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 def register(request):
+    """
+    Registration view
+
+    Outputs:
+        - subjects
+        - hardware
+        - user_form
+        - profile_form
+        - subject_form
+        - hardware_form
+    """
+
     # Get the request's context
     context = RequestContext(request)
 
@@ -191,6 +203,15 @@ def profile(request, id):
     return HttpResponse(template.render(context, request))
 
 def device_profile(request, id):
+    """Display the hardware device profile and the related extended questionnaires.
+
+    **Context**\n
+     - device: An instance of :class:'Hardware'
+     - surveys: All related instances of :class:'DeviceQuestionnaire'
+
+    **Template:**\n
+     - website/device_profile.html
+    """
     hardware = Hardware.objects.get(pk = id)
     questionnaires = DeviceQuestionnaire.objects.filter(hardware=hardware)
     template= loader.get_template('website/device_profile.html')

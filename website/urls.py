@@ -2,6 +2,18 @@ from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from . import views
 
+"""
+URL Patterns for the website.
+
+index
+register
+about
+completesurvey
+profile
+device_profile
+
+"""
+
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^register/$', views.register, name='register'),
