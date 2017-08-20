@@ -39,6 +39,7 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('first_name', 'last_name', 'username', 'email', 'password')
 
+
 class UserProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
@@ -76,6 +77,7 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('state', 'yearLevels', 'subjectsTaught', 'classSize', 'technologyBackground', 'programmingBackground', 'hardware_devices')
+
 
 class QuestionnaireForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -142,6 +144,7 @@ class QuestionnaireForm(forms.ModelForm):
         model = DeviceQuestionnaire
         exclude = ('user',)
 
+
 class SubjectForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SubjectForm, self).__init__(*args, **kwargs)
@@ -165,6 +168,7 @@ class SubjectForm(forms.ModelForm):
     class Meta:
         model = Subject
         fields = ('subject',)
+
 
 class HardwareForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

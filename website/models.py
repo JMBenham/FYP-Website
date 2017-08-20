@@ -14,7 +14,7 @@ class Subject(models.Model):
 
     **Attributes**
 
-    subject
+    subject : CharField
         The name of the subject.
     """
 
@@ -29,10 +29,9 @@ class Hardware(models.Model):
 
     **Attributes**
 
-    name
+    name : CharField
         The name of the subject.
-
-    imageUrl
+    imageUrl : CharField
         Image associated with the hardware.
     """
     name = models.CharField(max_length=150)
@@ -50,22 +49,22 @@ class Profile(models.Model):
 
     **Attributes**
 
-    user
+    user : OneToOneField
         One-To-One relationship with default django user model.
-    state
+    state : CharField
         The state in which the teacher works.
-    yearLevels
+    yearLevels : MultiSelectField
         The year levels that the teacher teaches.
-    subjectsTaught
+    subjectsTaught : ManyToManyField
         The subjects that the teacher teaches. Many-To-Many field with :class: 'Subject'
-    classSize
+    classSize : IntegerField
         The class size the teacher normally teaches.
-    technologyBackground
+    technologyBackground : IntegerField
         The technology background of the teacher.
-    programmingBackground
+    programmingBackground : IntegerField
         The programming background of the teacher.
-    hardware_devices
-        A list of the hardware devices used by the teacher. Many-To-Many field with .. py:class: 'Hardware'
+    hardware_devices : ManyToManyField
+        A list of the hardware devices used by the teacher. Many-To-Many field with 'Hardware' model
     """
     STATE_CHOICES = (
         ('VIC', 'Victoria'),
@@ -132,15 +131,26 @@ class DeviceQuestionnaire(models.Model):
 
         **Attributes**
 
-        *user*
+        user : ForeignKey
             ForeignKey relationship with logged in user.
-
-        *hardware*
+        hardware : ForeignKey
             ForeignKey relationship with the hardware being evaluated.
-
-        *question1*
+        question1 : PositiveIntegerField
             Question 1
-
+        question2 : PositiveIntegerField
+            Question 2
+        question3 : PositiveIntegerField
+            Question 3
+        question4 : PositiveIntegerField
+            Question 4
+        question5 : PositiveIntegerField
+            Question 5
+        question6 : PositiveIntegerField
+            Question 6
+        question7 : PositiveIntegerField
+            Question 7
+        question8 : PositiveIntegerField
+            Question 8
         """
     INPUT_CHOICES = (
         (1, "Strongly Disagree"),

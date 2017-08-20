@@ -22,20 +22,26 @@ def index(request):
         fun = (device.question9 + device.question10 + device.question11 + device.question12) / 4
 
         if device.hardware.name in list_of_questionnaires.keys():
-            list_of_questionnaires[device.hardware.name]['usability'] = (usability + list_of_questionnaires[device.hardware.name]['usability']) / 2
-            list_of_questionnaires[device.hardware.name]['retention'] = (retention + list_of_questionnaires[device.hardware.name]['retention']) /2
-            list_of_questionnaires[device.hardware.name]['fun'] = (fun + list_of_questionnaires[device.hardware.name]['fun']) / 2
+            list_of_questionnaires[device.hardware.name]['usability'] = (usability +
+                                                                         list_of_questionnaires[device.hardware.name]
+                                                                         ['usability']) / 2
+            list_of_questionnaires[device.hardware.name]['retention'] = (retention
+                                                                         + list_of_questionnaires[device.hardware.name]
+                                                                         ['retention']) / 2
+            list_of_questionnaires[device.hardware.name]['fun'] = (fun + list_of_questionnaires[device.hardware.name]
+                                                                   ['fun']) / 2
 
         else:
             list_of_questionnaires[device.hardware.name] = {"usability": usability,
-                                                        "retention": retention,
-                                                        "fun": fun}
+                                                            "retention": retention,
+                                                            "fun": fun}
     template= loader.get_template('website/index.html')
     context = {
         'list_of_devices': list_of_devices,
         'list_of_ratings': list_of_questionnaires
     }
     return HttpResponse(template.render(context, request))
+
 
 def register(request):
     """
@@ -125,7 +131,19 @@ def register(request):
     }
     return HttpResponse(template.render(context, request))
 
+
 def user_login(request):
+    """Display the profile of the currently logged in user.
+
+        .. Get:
+            Return the login form
+
+        ..Post:
+            Use Django's built in authentication system to log in the user.
+
+        **Template:**\n
+         - website/login.html
+        """
     # Like before, obtain the context for the user's request.
     context = RequestContext(request)
 
@@ -163,16 +181,42 @@ def user_login(request):
         # blank dictionary object...
         return render_to_response('website/login.html', {}, context)
 
+
 @login_required
 def user_logout(request):
+    """Call Django's built in logout method.
+
+        **Template:**\n
+         - website/logout.html
+        """
+
+
     # Since we know the user is logged in, we can now just log them out.
     logout(request)
 
     # Take the user back to the homepage.
     return HttpResponseRedirect('/')
 
+
 @login_required
 def profile(request, id):
+    """Display the profile of the currently logged in user.
+
+    **Context**\n
+     - user: Currently logged in user
+     - remoteuser: Instance  of User object obtained with 'id'
+     - userprofile: Instance of Profile object linked to 'remoteuser'
+     - questionnaires: List of all of the surveys completed by the user
+     - subjectsTaught: List all of the subjects taught by user
+     - hardwareUsed: List all hardware devices used by user
+     - class: Class size from user profile
+     - techBackground: Technology background from user profile
+     - programmingBackground: Programming background from user profile
+
+    **Template:**\n
+     - website/profile.html
+    """
+
     context = RequestContext(request)
     context_dict = {}
     u = User.objects.get(pk = id)
@@ -202,6 +246,7 @@ def profile(request, id):
     }
     return HttpResponse(template.render(context, request))
 
+
 def device_profile(request, id):
     """Display the hardware device profile and the related extended questionnaires.
 
@@ -214,21 +259,47 @@ def device_profile(request, id):
     """
     hardware = Hardware.objects.get(pk = id)
     questionnaires = DeviceQuestionnaire.objects.filter(hardware=hardware)
-    template= loader.get_template('website/device_profile.html')
+    template = loader.get_template('website/device_profile.html')
     context = {
         'device': hardware,
         'surveys':questionnaires,
     }
     return HttpResponse(template.render(context, request))
 
+
 def about(request):
-    template= loader.get_template('website/about.html')
+    """Display a generic about page to give users some information about the website.
+    TODO: Include links to the paper and describe the usability framework.
+
+    **Template:**\n
+     - website/profile.html
+    """
+    template = loader.get_template('website/about.html')
     context = {
     }
     return HttpResponse(template.render(context, request))
 
+
 @login_required
 def complete_survey(request):
+    """User can complete a survey for a specified device.
+
+    .. Get:
+        Return an empty form to the browser.
+
+    .. Post:
+        Process and save the completed survey.
+
+    **Context**\n
+     - survey_form: An instance of a 'QuestionnaireForm' object
+     - hardware_form: An instance of a 'HardwareForm' object
+
+    **Template:**\n
+     - website/submit_survey.html
+    """
+
+
+
     # Only process data if the request is a POST method
     if request.method == 'POST':
         # Attempt to take the information from the form
@@ -263,22 +334,29 @@ def complete_survey(request):
         survey_form = QuestionnaireForm()
         hardware_form = HardwareForm()
 
-    template= loader.get_template('website/submit_survey.html')
+    template = loader.get_template('website/submit_survey.html')
     context = {
         'survey_form': survey_form,
         'hardware_form': hardware_form,
     }
     return HttpResponse(template.render(context, request))
 
+
 @login_required()
 def delete_survey(request, id):
-    deviceSurvey = DeviceQuestionnaire.objects.get(pk=id)
+    """Delete the survey referenced by 'id'
+
+    Check to ensure that the device questionnaire is owned by the current user with
+    'device.user.id' is the same as 'user.id'
+
+    **Redirect:**\n
+     - website/profile.html
+    """
+    devicesurvey = DeviceQuestionnaire.objects.get(pk=id)
     user = request.user
 
-    print deviceSurvey.user
-    print user
-    if deviceSurvey.user.id == user.id:
-        deviceSurvey.delete()
+    if devicesurvey.user.id == user.id:
+        devicesurvey.delete()
 
     return redirect('profile', id=user.id)
 
