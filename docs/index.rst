@@ -12,7 +12,9 @@ Welcome to FYP Website's documentation!
 
    documentation/main
    documentation/design
+   documentation/code
    modules/website
+
 
 Indices and tables
 ==================

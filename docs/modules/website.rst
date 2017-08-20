@@ -1,5 +1,5 @@
-Website
-===============
+Website Code Reference
+======================
 
 Subpackages
 -----------
@@ -8,27 +8,16 @@ Subpackages
 
     website.templatetags
 
-Submodules
-----------
-
 Admin
----------------------
+-----
 
 .. automodule:: website.admin
     :members:
     :undoc-members:
     :show-inheritance:
 
-Apps
---------------------
-
-.. automodule:: website.apps
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 Forms
----------------------
+-----
 
 .. automodule:: website.forms
     :members:
@@ -36,14 +25,13 @@ Forms
     :show-inheritance:
 
 Models
-----------------------
+------
 
 .. automodule:: website.models
     :members:
-    :show-inheritance:
 
 Tests
----------------------
+-----
 
 .. automodule:: website.tests
     :members:
@@ -51,7 +39,7 @@ Tests
     :show-inheritance:
 
 Urls
---------------------
+----
 
 .. automodule:: website.urls
     :members:
@@ -59,7 +47,7 @@ Urls
     :show-inheritance:
 
 Views
----------------------
+-----
 
 .. automodule:: website.views
     :members:
