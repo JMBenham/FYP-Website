@@ -53,7 +53,6 @@ class UserProfileForm(forms.ModelForm):
         self.helper.form_tag = False
 
         self.helper.layout = Layout(
-            Field('yearLevels', 'yearLevels', css_class="checkbox"),
             Fieldset(
                 'Some information about your technology usage: ',
                 'state',
