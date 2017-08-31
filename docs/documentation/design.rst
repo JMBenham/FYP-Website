@@ -94,13 +94,24 @@ this system.
 Theory
 ~~~~~~
 
-Usability
+Usability can be measured in a number of different ways. Nieslen describes the four methods of evaluating user
+interfaces as:
 
-Domain specific usability
+    #. Formal, through an analysis technique
+    #. Automatic, by a computerized procedure
+    #. Empirically, by experiments with test users
+    #. Heuristically, by passing judgment by ones own opinion of the interface
+
+Heuristic evaluation is the method used most often due to the time, cost and expertise required to perform the other
+methods are not often available.
+
+The same heuristics cannot always be applied to different situations.
 
 This usability scale is built on a number of different usability scales that have previously been developed.
 
 SUS quick and dirty usability scale
+Kolling heursitcs
+Ssembagui
 
 Surveys
 ~~~~~~~

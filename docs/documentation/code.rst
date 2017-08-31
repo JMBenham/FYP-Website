@@ -4,12 +4,26 @@ Code
 Language
 --------
 
-The website is built on Django.
+The website is built on Django version 1.11.2 with Python 2.7. Django was chosen as it enables complex web applications
+to be developed and deployed quickly. The scripting capablities and extensability of python mean that features such as
+the filtering of database results based on the inputs are easily implemented.
 
 Models
 ------
 
-There are 6 different models that have been included.
+There are 4 models that have been included. These provide all of the different values that are available on
+the site. The models are:
+
+    #. DeviceQuestionnaire
+        * The usability survey that teachers can fill out for each hardware device. It has a relationship with the hardware device that it is filled out for. All the usability surveys for a specific piece of hardware can be retrieved.
+    #. Hardware
+        * Defines a piece of physical computing hardware. It has attributes name and image.
+    #. Profile
+        * An extension of the default django user class. It holds the information relevant to the user such as which state they teach in and their previous programming experience.
+    #. Subject
+        * Defines the subjects which teachers can select from that they teach. Defined as a model so that teachers can add their own subjects if it does not appear on the list.
+
+Extended descriptions for all of the models can be found in the API reference of this manual.
 
 Views
 -----

@@ -5,7 +5,6 @@ Subpackages
 -----------
 
 .. toctree::
-
     website.templatetags
 
 Admin
