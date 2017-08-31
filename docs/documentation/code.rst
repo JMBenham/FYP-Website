@@ -61,11 +61,16 @@ The forms provide a method of inputting the data into the database models. The f
   
 Each of these forms links directly to a class which provides the destination for form inputs to be saved.
 
-The UserForm and UserProfileForm provide the registration forms. The UserForm class saves to the Django default user class. The UserProfileForm is the extension of this class to provide extra inputs that are required by this website. The UserProfileForm implements the initial survey.
+The UserForm and UserProfileForm provide the registration forms. The UserForm class saves to the Django default user
+class. The UserProfileForm is the extension of this class to provide extra inputs that are required by this website.
+The UserProfileForm implements the initial survey.
 
-The QuestionnaireForm is the form display of the questionnaire usability model. It is displayed using tabbed elements for each of the usability criteria to preserve neatness and readability of the page.
+The QuestionnaireForm is the form display of the questionnaire usability model. It is displayed using tabbed elements
+for each of the usability criteria to preserve neatness and readability of the page.
 
-The SubjectForm and HardwareForm classes provide simple form layouts for their respective models. These are kept as simple as possible as these forms are designed to be displayed as modals. These forms are used to add new subjects or types of hardware when a teacher is filling in the initial survey or a usability questionnaire.
+The SubjectForm and HardwareForm classes provide simple form layouts for their respective models. These are
+kept as simple as possible as these forms are designed to be displayed as modals. These forms are used to add new
+subjects or types of hardware when a teacher is filling in the initial survey or a usability questionnaire.
 
 Plugins
 -------
@@ -73,7 +78,10 @@ Plugins
 A number of additional Django apps were included in the project to provide additional functionality to
 the website. These provide necessary functions for file and form handling.
 
-Django-crispy-forms is used for the formatting of forms for display on the frontend. Crispy forms provides functions for easily marking up the form code to generate HTML. This means that the form markup doesn't have to be written manually in the HTML templates. All changes to the layout of the forms should therefore be made directly in the forms file.
+Django-crispy-forms is used for the formatting of forms for display on the frontend. Crispy forms provides functions
+for easily marking up the form code to generate HTML. This means that the form markup doesn't have to be written
+manually in the HTML templates. All changes to the layout of the forms should therefore be made directlyin the forms
+file.
 
 multiselectfield
 
