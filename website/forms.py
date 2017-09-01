@@ -8,6 +8,19 @@ from django.contrib.auth.forms import PasswordResetForm
 
 
 class UserForm(forms.ModelForm):
+    """
+        User form
+
+        Inputs:
+
+            - first_name : Text
+            - last_name : Text
+            - username : Text
+            - email : Text
+            - password : Text
+    """
+
+
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -41,6 +54,20 @@ class UserForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
+    """
+        Profile form
+
+        Inputs:
+
+            - state : Dropdown
+            - yearLevels : Checkbox
+            - subjectsTaught : Checkbox
+            - classSize : Dropdown
+            - technologyBackground : Dropdown
+            - programmingBackground : Dropdown
+            - hardware_devices : Checkbox
+
+    """
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -79,6 +106,36 @@ class UserProfileForm(forms.ModelForm):
 
 
 class QuestionnaireForm(forms.ModelForm):
+    """
+    Questionnaire form
+
+    Inputs:
+
+        - hardware : Dropdown
+
+        Usability Tab
+
+        - question 1 : 5-point scale
+        - question 1 : 5-point scale
+        - question 1 : 5-point scale
+        - question 1 : 5-point scale
+
+        Fun tab
+
+        - question 1 : 5-point scale
+        - question 1 : 5-point scale
+        - question 1 : 5-point scale
+        - question 1 : 5-point scale
+
+        Completeness tab
+
+        - question 1 : 5-point scale
+        - question 1 : 5-point scale
+        - question 1 : 5-point scale
+        - question 1 : 5-point scale
+
+        - Submit : Button
+    """
     def __init__(self, *args, **kwargs):
         super(QuestionnaireForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -123,7 +180,6 @@ class QuestionnaireForm(forms.ModelForm):
             ButtonHolder(
                 Submit('submit', 'Submit', css_class='button white pull-right')
             )
-
         )
 
     hardware = forms.ModelChoiceField(
@@ -145,6 +201,14 @@ class QuestionnaireForm(forms.ModelForm):
 
 
 class SubjectForm(forms.ModelForm):
+    """
+    Subject form
+
+    Inputs:
+
+        - subject : Text
+        - Submit : Button
+    """
     def __init__(self, *args, **kwargs):
         super(SubjectForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -170,6 +234,14 @@ class SubjectForm(forms.ModelForm):
 
 
 class HardwareForm(forms.ModelForm):
+    """
+    Hardware form
+
+    Inputs:
+
+        - Name : Text
+        - Submit : Button
+    """
     def __init__(self, *args, **kwargs):
         super(HardwareForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()

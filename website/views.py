@@ -13,6 +13,13 @@ from django.shortcuts import render, render_to_response, redirect
 # Create your views here.
 
 def index(request):
+    """
+    Home page view
+
+    Outputs:
+        - list_of_devices
+        - list_of_ratings
+    """
     list_of_devices = Hardware.objects.all()
     questionnaires = DeviceQuestionnaire.objects.all()
     list_of_questionnaires = {}

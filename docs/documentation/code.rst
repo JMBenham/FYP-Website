@@ -28,7 +28,8 @@ Extended descriptions for all of the models can be found in the API reference of
 Views
 -----
 
-The views control the flow of information between models and templates. There is a unique view for each page on the website. The list of pages and their urls are:
+The views control the flow of information between models and templates. There is a unique view for each page on the
+website. The list of pages and their urls are:
 
   - index : "/"
   - register : "/register/"
@@ -53,6 +54,7 @@ Forms
 -----
 
 The forms provide a method of inputting the data into the database models. The forms included in this website are:
+
   #. UserForm
   #. UserProfileForm
   #. QuestionnaireForm
