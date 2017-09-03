@@ -23,6 +23,7 @@ def index(request):
     list_of_devices = []
     questionnaires = Questionnaire.objects.all()
     list_of_questionnaires = {}
+    '''
     for device in questionnaires:
         list_of_devices.append(Hardware.objects.get(name=device.hardware.name))
         if device.hardware.name not in list_of_questionnaires.keys():
@@ -53,6 +54,7 @@ def index(request):
         device_key['curriculum'] = device_key['curriculum'] + (( device.question28 + device.question29 + device.question30) / 3) / 2
 
     print list_of_devices
+    '''
     template= loader.get_template('website/index.html')
     context = {
         'list_of_devices': list_of_devices,

@@ -169,6 +169,12 @@ class Questionnaire(models.Model):
     def __unicode__(self):
         return self.name
 
+    def questions(self):
+        if self.pk:
+            return  Question.objects.filter(questionnaire=self.pk)
+        else:
+            return None
+
 
 class Category(models.Model):
     name = models.CharField(max_length=400)
@@ -180,11 +186,11 @@ class Category(models.Model):
 
 class Question(models.Model):
     INPUT_CHOICES = (
-        (1, "Strongly Disagree"),
-        (2, "Disagree"),
-        (3, "Neutral"),
-        (4, "Agree"),
-        (5, "Strongly Agree"),
+        ("stronglydisagree", "Strongly Disagree"),
+        ("disagree", "Disagree"),
+        ("neutral", "Neutral"),
+        ("agree", "Agree"),
+        ("stronglyagree", "Strongly Agree"),
     )
 
     TEXT = 'text'

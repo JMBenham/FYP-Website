@@ -2,9 +2,10 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, ButtonHolder, Fieldset, Field, Button, HTML
 from crispy_forms.bootstrap import Tab, TabHolder, InlineCheckboxes, InlineRadios
-from website.models import Profile, Hardware, Subject, Questionnaire
+from website.models import Profile, Hardware, Subject, Questionnaire, Category, Question, Response, Answer
 from django.contrib.auth.admin import User
 from django.contrib.auth.forms import PasswordResetForm
+from django.utils.safestring import mark_safe
 
 
 class UserForm(forms.ModelForm):
@@ -106,6 +107,7 @@ class UserProfileForm(forms.ModelForm):
 
 class QuestionnaireForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
+        question_list = []
         super(QuestionnaireForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_id = "id-questionnaire_form"
@@ -114,6 +116,7 @@ class QuestionnaireForm(forms.ModelForm):
         self.helper.field_class = 'col-md-7'
         self.helper.form_method = 'post'
         self.helper.form_action = 'completesurvey'
+        self.questionnaire = Questionnaire.objects.get(name='Hardware')
 
         self.helper.layout = Layout(
             Fieldset(
@@ -123,20 +126,42 @@ class QuestionnaireForm(forms.ModelForm):
             HTML('<button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#newHardwareModal" data-whatever="@mdo">Add new hardware</button>'),
             HTML('</br>'),
             HTML('</br>'),
-            TabHolder(
+            Fieldset(
+                'Complete these questions about the hardware.',
+
             ),
             ButtonHolder(
                 Submit('submit', 'Submit', css_class='button white pull-right')
             )
         )
+        for q in self.questionnaire.questions():
+            question_list.append(q.pk)
+            if q.question_type == Question.TEXT:
+                self.fields["question_%d" %q.pk] = forms.CharField(label=q.question,
+                                                                   widget=forms.Textarea,
+                                                                   )
+            elif q.question_type == Question.RADIO:
+                self.fields["question_%d" % q.pk] = forms.ChoiceField(label=q.question,
+                                                                      choices=q.INPUT_CHOICES)
+                self.helper.layout[4].append(InlineRadios('question_%d' %q.pk))
 
+            if q.topic:
+                classes = self.fields["question_%d" % q.pk].widget.attrs.get("class")
+                if classes:
+                    self.fields["question_%d" % q.pk].widget.attrs["class"] = classes + (" cat_%s" % q.topic.name)
+                else:
+                    self.fields["question_%d" % q.pk].widget.attrs["class"] = (" cat_%s" % q.topic.name)
+                self.fields["question_%d" % q.pk].widget.attrs["category"] = q.topic.name
     hardware = forms.ModelChoiceField(
         label="Which hardware do you use?",
-        queryset = Hardware.objects.all(),
+        queryset=Hardware.objects.all(),
     )
 
+    def save(self, commit=True):
+        response = super(QuestionnaireForm, self).save(commit=False)
+
     class Meta:
-        model = Questionnaire
+        model = Response
         exclude = ('user',)
 
 
