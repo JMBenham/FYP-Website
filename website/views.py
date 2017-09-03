@@ -20,28 +20,39 @@ def index(request):
         - list_of_devices
         - list_of_ratings
     """
-    list_of_devices = Hardware.objects.all()
+    list_of_devices = []
     questionnaires = DeviceQuestionnaire.objects.all()
     list_of_questionnaires = {}
     for device in questionnaires:
-        usability = (device.question1 + device.question2 + device.question3 + device.question4) / 4
-        retention = (device.question5 + device.question6 + device.question7 + device.question8) / 4
-        fun = (device.question9 + device.question10 + device.question11 + device.question12) / 4
+        list_of_devices.append(Hardware.objects.get(name=device.hardware.name))
+        if device.hardware.name not in list_of_questionnaires.keys():
+            list_of_questionnaires[device.hardware.name] = {"nonthreatening": 1,
+                                                            "engagement": 1,
+                                                            "visibility": 1,
+                                                            "clarity":1,
+                                                            "error":1,
+                                                            "feedback":1,
+                                                            "cost":1,
+                                                            "time":1,
+                                                            "technical":1,
+                                                            "curriculum":1}
 
-        if device.hardware.name in list_of_questionnaires.keys():
-            list_of_questionnaires[device.hardware.name]['usability'] = (usability +
-                                                                         list_of_questionnaires[device.hardware.name]
-                                                                         ['usability']) / 2
-            list_of_questionnaires[device.hardware.name]['retention'] = (retention
-                                                                         + list_of_questionnaires[device.hardware.name]
-                                                                         ['retention']) / 2
-            list_of_questionnaires[device.hardware.name]['fun'] = (fun + list_of_questionnaires[device.hardware.name]
-                                                                   ['fun']) / 2
+        device_key = list_of_questionnaires[device.hardware.name]
+        device_key['nonthreatening'] = device_key['nonthreatening'] + ((device.question1 + device.question2 + device.question3) / 3) /2
+        device_key['engagement'] = device_key['engagement'] + ((device.question4 +
+                                                                device.question5 +
+                                                                device.question6) / 3) / 2
 
-        else:
-            list_of_questionnaires[device.hardware.name] = {"usability": usability,
-                                                            "retention": retention,
-                                                            "fun": fun}
+        device_key['visibility'] = device_key['visibility'] + ((device.question7 + device.question8 + device.question9) / 3) / 2
+        device_key['clarity'] = device_key['clarity'] + ((device.question10 + device.question11 + device.question12) / 3) / 2
+        device_key['error'] = device_key['error'] + ((device.question13 + device.question14 + device.question15) / 3) / 2
+        device_key['feedback'] = device_key['feedback'] + ((device.question16 + device.question17 + device.question18) / 3) / 2
+        device_key['cost'] = device_key['cost'] + ((device.question19 + device.question20 + device.question21) / 3) / 2
+        device_key['time'] = device_key['time'] + ((device.question22 + device.question23 + device.question24) / 3) / 2
+        device_key['technical'] = device_key['technical'] + ((device.question25 + device.question26 + device.question27) / 3) / 2
+        device_key['curriculum'] = device_key['curriculum'] + (( device.question28 + device.question29 + device.question30) / 3) / 2
+
+    print list_of_devices
     template= loader.get_template('website/index.html')
     context = {
         'list_of_devices': list_of_devices,

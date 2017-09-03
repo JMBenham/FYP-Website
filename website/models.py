@@ -152,6 +152,7 @@ class DeviceQuestionnaire(models.Model):
         question8 : PositiveIntegerField
             Question 8
         """
+
     INPUT_CHOICES = (
         (1, "Strongly Disagree"),
         (2, "Disagree"),
@@ -159,8 +160,10 @@ class DeviceQuestionnaire(models.Model):
         (4, "Agree"),
         (5, "Strongly Agree"),
     )
+
     user = models.ForeignKey(Profile)
     hardware = models.ForeignKey(Hardware, on_delete=models.CASCADE, null=True)
+
     question1 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
     question2 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
     question3 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
@@ -173,7 +176,25 @@ class DeviceQuestionnaire(models.Model):
     question10 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
     question11 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
     question12 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-
+    question13 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question14 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question15 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question16 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question17 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question18 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question19 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question20 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question21 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question22 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question23 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question24 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question25 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question26 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question27 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question28 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question29 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    question30 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
 
     def __unicode__(self):
         return self.hardware.name
+

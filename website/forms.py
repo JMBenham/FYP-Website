@@ -20,7 +20,6 @@ class UserForm(forms.ModelForm):
             - password : Text
     """
 
-
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -113,26 +112,8 @@ class QuestionnaireForm(forms.ModelForm):
 
         - hardware : Dropdown
 
-        Usability Tab
-
-        - question 1 : 5-point scale
-        - question 1 : 5-point scale
-        - question 1 : 5-point scale
-        - question 1 : 5-point scale
-
-        Fun tab
-
-        - question 1 : 5-point scale
-        - question 1 : 5-point scale
-        - question 1 : 5-point scale
-        - question 1 : 5-point scale
-
-        Completeness tab
-
-        - question 1 : 5-point scale
-        - question 1 : 5-point scale
-        - question 1 : 5-point scale
-        - question 1 : 5-point scale
+        10 tabs for the different categories
+        Each has 3 questions on a 5 point scale
 
         - Submit : Button
     """
@@ -156,26 +137,68 @@ class QuestionnaireForm(forms.ModelForm):
             HTML('</br>'),
             TabHolder(
                 Tab(
-                    'Usability',
+                    'Non-threatening',
                     InlineRadios('question1'),
                     InlineRadios('question2'),
                     InlineRadios('question3'),
-                    InlineRadios('question4'),
                 ),
                 Tab(
-                    'Fun',
+                    'Engagement',
+                    InlineRadios('question4'),
                     InlineRadios('question5'),
                     InlineRadios('question6'),
-                    InlineRadios('question7'),
-                    InlineRadios('question8'),
                 ),
                 Tab(
-                    'Completeness',
+                    'Visibility',
+                    InlineRadios('question7'),
+                    InlineRadios('question8'),
                     InlineRadios('question9'),
+
+                ),
+                Tab(
+                    'Clarity',
                     InlineRadios('question10'),
                     InlineRadios('question11'),
                     InlineRadios('question12'),
+                ),
+                Tab(
+                    'Error avoidance',
+                    InlineRadios('question13'),
+                    InlineRadios('question14'),
+                    InlineRadios('question15'),
+                ),
+                Tab(
+                    'Feedback',
+                    InlineRadios('question16'),
+                    InlineRadios('question17'),
+                    InlineRadios('question18'),
+
+                ),
+                Tab(
+                    'Cost',
+                    InlineRadios('question19'),
+                    InlineRadios('question20'),
+                    InlineRadios('question21'),
+                ),
+                Tab(
+                    'Time',
+                    InlineRadios('question22'),
+                    InlineRadios('question23'),
+                    InlineRadios('question24'),
+                ),
+                Tab(
+                    'Technical',
+                    InlineRadios('question25'),
+                    InlineRadios('question26'),
+                    InlineRadios('question27'),
+                ),
+                Tab(
+                    'Curriculum',
+                    InlineRadios('question28'),
+                    InlineRadios('question29'),
+                    InlineRadios('question30'),
                 )
+
             ),
             ButtonHolder(
                 Submit('submit', 'Submit', css_class='button white pull-right')
@@ -186,12 +209,123 @@ class QuestionnaireForm(forms.ModelForm):
         label="Which hardware do you use?",
         queryset = Hardware.objects.all(),
     )
-
     question1 = forms.ChoiceField(
-        label = "How easy is the hardware to use?",
+        label = "The interface is inviting to new users",
         choices=DeviceQuestionnaire.INPUT_CHOICES
     )
     question2 = forms.ChoiceField(
+        label = "I am never afraid that I may lose all my work due to small mistakes",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question3 = forms.ChoiceField(
+        label = "Students feel positive the first time they use this system",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question4 = forms.ChoiceField(
+        label = "Students are highly motivated to use this hardware",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question5 = forms.ChoiceField(
+        label = "Students are excited to spend time using the hardware",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question6 = forms.ChoiceField(
+        label = "Students do not get distracted from the programming concepts",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question7 = forms.ChoiceField(
+        label = "The system always does what I am expecting",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question8 = forms.ChoiceField(
+        label = "I always know what the system is doing",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question9 = forms.ChoiceField(
+        label = "TODO",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question10 = forms.ChoiceField(
+        label = "The interface is clear and easy to understand",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question11 = forms.ChoiceField(
+        label = "I never have to look up how to do something on the interface",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question12 = forms.ChoiceField(
+        label = "I spend only a small amount of time explaining the interface to new students",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question13 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question14 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question15 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question16 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question17 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question18 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question19 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question20 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question21 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question22 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question23 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question24 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question25 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question26 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question27 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question28 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question29 = forms.ChoiceField(
+        label = "How easy was it actually to use?",
+        choices=DeviceQuestionnaire.INPUT_CHOICES
+    )
+    question30 = forms.ChoiceField(
         label = "How easy was it actually to use?",
         choices=DeviceQuestionnaire.INPUT_CHOICES
     )

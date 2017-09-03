@@ -101,18 +101,53 @@
                                 <br></br>
                                 {% for key,value in list_of_ratings.items %}
                                     {% if key == device.name %}
-                                        <p>Usability:
-                                            {% for i in value.usability|get_range %}
+                                        <p>Non-threatening:
+                                            {% for i in value.nonthreatening|get_range %}
                                                 <i class="fa fa-star"></i>
                                             {% endfor %}
                                         </p>
-                                        <p>Retention:
-                                            {% for i in value.retention|get_range %}
+                                        <p>Engagement:
+                                            {% for i in value.engagement|get_range %}
                                                 <i class="fa fa-star"></i>
                                             {% endfor %}
                                         </p>
-                                        <p>Fun:
-                                            {% for i in value.fun|get_range %}
+                                        <p>Visibility:
+                                            {% for i in value.visibility|get_range %}
+                                                <i class="fa fa-star"></i>
+                                            {% endfor %}
+                                        </p>
+                                        <p>Clarity:
+                                            {% for i in value.clarity|get_range %}
+                                                <i class="fa fa-star"></i>
+                                            {% endfor %}
+                                        </p>
+                                         <p>Error:
+                                            {% for i in value.error|get_range %}
+                                                <i class="fa fa-star"></i>
+                                            {% endfor %}
+                                        </p>
+                                        <p>Feedback:
+                                            {% for i in value.feedback|get_range %}
+                                                <i class="fa fa-star"></i>
+                                            {% endfor %}
+                                        </p>
+                                        <p>Cost:
+                                            {% for i in value.cost|get_range %}
+                                                <i class="fa fa-star"></i>
+                                            {% endfor %}
+                                        </p>
+                                        <p>Time:
+                                            {% for i in value.time|get_range %}
+                                                <i class="fa fa-star"></i>
+                                            {% endfor %}
+                                        </p>
+                                        <p>Technical:
+                                            {% for i in value.technical|get_range %}
+                                                <i class="fa fa-star"></i>
+                                            {% endfor %}
+                                        </p>
+                                        <p>Curriculum:
+                                            {% for i in value.curriculum|get_range %}
                                                 <i class="fa fa-star"></i>
                                             {% endfor %}
                                         </p>
