@@ -23,6 +23,7 @@ class Subject(models.Model):
     def __unicode__(self):
         return self.subject
 
+
 class Hardware(models.Model):
     """
     Defines the hardware model.
@@ -42,6 +43,7 @@ class Hardware(models.Model):
 
     def __unicode__(self):
         return self.name
+
 
 class Profile(models.Model):
     """
@@ -125,7 +127,8 @@ class Profile(models.Model):
     def __unicode__(self):
         return self.user.first_name + " " + self.user.last_name
 
-class DeviceQuestionnaire(models.Model):
+
+class Questionnaire(models.Model):
     """
         Model to create and store the questionnaire on a per device basis.
 
@@ -161,40 +164,65 @@ class DeviceQuestionnaire(models.Model):
         (5, "Strongly Agree"),
     )
 
-    user = models.ForeignKey(Profile)
-    hardware = models.ForeignKey(Hardware, on_delete=models.CASCADE, null=True)
-
-    question1 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question2 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question3 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question4 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question5 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question6 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question7 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question8 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question9 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question10 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question11 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question12 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question13 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question14 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question15 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question16 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question17 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question18 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question19 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question20 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question21 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question22 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question23 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question24 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question25 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question26 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question27 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question28 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question29 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
-    question30 = models.PositiveIntegerField(default=1, choices=INPUT_CHOICES)
+    name = models.CharField(max_length=200, default='hardware')
 
     def __unicode__(self):
-        return self.hardware.name
+        return self.name
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=400)
+    survey = models.ForeignKey(Questionnaire)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Question(models.Model):
+    INPUT_CHOICES = (
+        (1, "Strongly Disagree"),
+        (2, "Disagree"),
+        (3, "Neutral"),
+        (4, "Agree"),
+        (5, "Strongly Agree"),
+    )
+
+    TEXT = 'text'
+    RADIO = 'radio'
+
+    QUESTION_TYPES = (
+        (TEXT, 'text'),
+        (RADIO, 'radio'),
+    )
+
+    questionnaire = models.ForeignKey(Questionnaire)
+    topic = models.ForeignKey(Category)
+    question_type = models.CharField(max_length=200, choices=QUESTION_TYPES, default=RADIO)
+    question = models.CharField(max_length=100, default="TODO")
+
+    def __unicode__(self):
+        return self.questionnaire.name + " - " + self.topic.name + " - " + self.question
+
+
+class Response(models.Model):
+    user = models.ForeignKey(Profile)
+    survey = models.ForeignKey(Questionnaire)
+    hardware = models.ForeignKey(Hardware, on_delete=models.CASCADE, null=True)
+
+    def __unicode__(self):
+        return self.user.user.first_name + " - " + self.hardware.name
+
+
+class Answer(models.Model):
+    question = models.ForeignKey(Question)
+    response = models.ForeignKey(Response, null=True)
+
+
+class AnswerText(Answer):
+    body = models.TextField(blank=True, null=True)
+
+
+class AnswerRadio(Answer):
+    body = models.TextField(blank=True, null=True)
+
 

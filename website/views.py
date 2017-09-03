@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.admin import User
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Hardware, Profile, DeviceQuestionnaire, Subject
+from .models import Hardware, Profile, Questionnaire, Subject
 from .forms import UserForm, UserProfileForm, QuestionnaireForm, SubjectForm, HardwareForm
 from django.shortcuts import render, render_to_response, redirect
 
@@ -21,7 +21,7 @@ def index(request):
         - list_of_ratings
     """
     list_of_devices = []
-    questionnaires = DeviceQuestionnaire.objects.all()
+    questionnaires = Questionnaire.objects.all()
     list_of_questionnaires = {}
     for device in questionnaires:
         list_of_devices.append(Hardware.objects.get(name=device.hardware.name))
@@ -315,8 +315,6 @@ def complete_survey(request):
     **Template:**\n
      - website/submit_survey.html
     """
-
-
 
     # Only process data if the request is a POST method
     if request.method == 'POST':

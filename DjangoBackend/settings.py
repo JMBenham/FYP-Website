@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'website',
     'multiselectfield',
     'crispy_forms',
+
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
