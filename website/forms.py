@@ -2,7 +2,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, ButtonHolder, Fieldset, Field, Button, HTML
 from crispy_forms.bootstrap import Tab, TabHolder, InlineCheckboxes, InlineRadios
-from website.models import Profile, Hardware, Subject, Questionnaire, Category, Question, Response, Answer
+from website.models import Profile, Hardware, Subject, Questionnaire, Category, Question, Response, Answer, AnswerText, AnswerRadio
 from django.contrib.auth.admin import User
 from django.contrib.auth.forms import PasswordResetForm
 from django.utils.safestring import mark_safe
@@ -117,6 +117,7 @@ class QuestionnaireForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_action = 'completesurvey'
         self.questionnaire = Questionnaire.objects.get(name='Hardware')
+        self.fields['survey'].required = False
 
         self.helper.layout = Layout(
             Fieldset(
@@ -128,7 +129,6 @@ class QuestionnaireForm(forms.ModelForm):
             HTML('</br>'),
             Fieldset(
                 'Complete these questions about the hardware.',
-
             ),
             ButtonHolder(
                 Submit('submit', 'Submit', css_class='button white pull-right')
@@ -137,9 +137,8 @@ class QuestionnaireForm(forms.ModelForm):
         for q in self.questionnaire.questions():
             question_list.append(q.pk)
             if q.question_type == Question.TEXT:
-                self.fields["question_%d" %q.pk] = forms.CharField(label=q.question,
-                                                                   widget=forms.Textarea,
-                                                                   )
+                self.fields["question_%d" %q.pk] = forms.CharField(label=q.question, widget=forms.Textarea)
+                self.helper.layout[4].append('question_%d' % q.pk)
             elif q.question_type == Question.RADIO:
                 self.fields["question_%d" % q.pk] = forms.ChoiceField(label=q.question,
                                                                       choices=q.INPUT_CHOICES)
@@ -157,8 +156,27 @@ class QuestionnaireForm(forms.ModelForm):
         queryset=Hardware.objects.all(),
     )
 
-    def save(self, commit=True):
+    def save(self, user_id, *args, **kwargs):
         response = super(QuestionnaireForm, self).save(commit=False)
+        response.survey = self.questionnaire
+        response.user = user_id
+        response.save()
+
+        for field_name, field_value in self.cleaned_data.iteritems():
+            if field_name.startswith("question_"):
+                q_id = int(field_name.split("_")[1])
+                q = Question.objects.get(pk=q_id)
+
+                if q.question_type == Question.TEXT:
+                    a = AnswerText(question=q)
+                    a.body = field_value
+                elif q.question_type == Question.RADIO:
+                    a = AnswerRadio(question=q)
+                    a.body = field_value
+
+                a.response = response
+                a.save()
+        return response
 
     class Meta:
         model = Response

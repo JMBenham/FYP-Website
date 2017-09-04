@@ -324,13 +324,11 @@ def complete_survey(request):
         survey_form = QuestionnaireForm(data=request.POST)
         hardware_form = HardwareForm(data=request.POST)
 
-        if survey_form.is_valid():
-            # Now sort out the UserProfile instance.
-            # Since we need to set the user attribute ourselves, we set commit=False.
-            # This delays saving the model until we're ready to avoid integrity problems.
-            survey = survey_form.save(commit=False)
-            survey.user = Profile.objects.get(user=request.user)
+        print survey_form.errors.as_data()
 
+        if survey_form.is_valid():
+            user = Profile.objects.get(user=request.user)
+            survey = survey_form.save(user)
             survey.save()
 
             return redirect('index')
