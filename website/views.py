@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.admin import User
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Hardware, Profile, Questionnaire, Subject
+from .models import Hardware, Profile, Questionnaire, Subject, Response, AnswerRadio, AnswerText, Category
 from .forms import UserForm, UserProfileForm, QuestionnaireForm, SubjectForm, HardwareForm
 from django.shortcuts import render, render_to_response, redirect
 
@@ -239,30 +239,39 @@ def profile(request, id):
 
     context = RequestContext(request)
     context_dict = {}
-    u = User.objects.get(pk = id)
+    u = User.objects.get(pk=id)
+
+    answers = []
 
     try:
         up = Profile.objects.get(user=u)
     except:
         up = None
 
-    submittedQuestionnaires = DeviceQuestionnaire.objects.filter(user=up)
+    submittedQuestionnaires = Response.objects.filter(user=up)
+    for survey in submittedQuestionnaires:
+        answers += AnswerText.objects.filter(response=survey)
+        answers += AnswerRadio.objects.filter(response=survey)
+
+    categories = Category.objects.all()
     subjects = up.subjectsTaught.all()
     hardware = up.hardware_devices.all()
-    sizeClass = dict(up.CLASS_SIZE_CHOICES)[up.classSize]
-    techBackground = dict(up.TECH_BACKGROUND_CHOICES)[up.technologyBackground]
-    programmingBackground = dict(up.PROGRAMMING_BACKGROUND_CHOICES)[up.programmingBackground]
-    template= loader.get_template('website/profile.html')
+    sizeclass = dict(up.CLASS_SIZE_CHOICES)[up.classSize]
+    techbackground = dict(up.TECH_BACKGROUND_CHOICES)[up.technologyBackground]
+    programmingbackground = dict(up.PROGRAMMING_BACKGROUND_CHOICES)[up.programmingBackground]
+    template = loader.get_template('website/profile.html')
     context = {
         'user': request.user,
         'remoteuser': u,
         'userprofile': up,
         'questionnaires': submittedQuestionnaires,
+        'categories': categories,
+        'answers': answers,
         'subjectsTaught': subjects,
         'hardwareUsed': hardware,
-        'class': sizeClass,
-        'techBackground': techBackground,
-        'programmingBackground': programmingBackground,
+        'class': sizeclass,
+        'techBackground': techbackground,
+        'programmingBackground': programmingbackground,
     }
     return HttpResponse(template.render(context, request))
 

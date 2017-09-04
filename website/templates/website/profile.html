@@ -26,21 +26,32 @@
             </br>
             <h4>You have submitted questionnaires for the following hardware.</h4>
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                {% for answer in questionnaires %}
+                {% for response in questionnaires %}
                       <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingOne">
                           <h4 class="panel-title">
-                            {{ answer.hardware }}
-                            <a class="btn btn-default collapsed pull-right" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ answer.id }}" aria-expanded="true" aria-controls="collapse{{ answer.id }}">
+                            {{ response.hardware }}
+                            <a class="btn btn-default collapsed pull-right" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ response.id }}" aria-expanded="true" aria-controls="collapse{{ answer.id }}">
                                 <span class="caret"></span>
                             </a>
                             <br></br>
                           </h4>
                         </div>
-                        <div id="collapse{{ answer.id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapse{{ answer.id }}">
+                        <div id="collapse{{ response.id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapse{{ response.id }}">
                           <div class="panel-body">
-                              <p>Question 1: {{ answer.question1 }}</p>
-                              <a class="btn btn-danger" href="{% url 'delete_survey' id=answer.id %}">Delete</a>
+                            {% for category in categories %}
+                                <h6> {{ category.name }}</h6>
+                                {% for answer in answers %}
+                                    {% if answer.question.topic == category %}
+                                        {% if answer.response.hardware == response.hardware %}
+                                            <p>{{ answer.question.question }} : {{ answer.body }}</p>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+
+                            <a class="btn btn-danger" href="{% url 'delete_survey' id=response.id %}">Delete</a>
+
                           </div>
                         </div>
                       </div>
