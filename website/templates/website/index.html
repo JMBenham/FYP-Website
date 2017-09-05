@@ -87,8 +87,8 @@
 {% block body %}
     <div class="container" style="padding-top: 50px" xmlns="http://www.w3.org/1999/html">
         <div class="row">
-            {% if list_of_devices %}
-                {% for device in list_of_devices %}
+            {% if list_of_ratings %}
+                {% for device, ratings in list_of_ratings.items %}
                     <div class="col-md-3">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -99,60 +99,15 @@
                                     <img src="{{ device.imageUrl }}" class="img-thumbnail">
                                 </a>
                                 <br></br>
-                                {% for key,value in list_of_ratings.items %}
-                                    {% if key == device.name %}
-                                        <p>Non-threatening:
-                                            {% for i in value.nonthreatening|get_range %}
-                                                <i class="fa fa-star"></i>
-                                            {% endfor %}
-                                        </p>
-                                        <p>Engagement:
-                                            {% for i in value.engagement|get_range %}
-                                                <i class="fa fa-star"></i>
-                                            {% endfor %}
-                                        </p>
-                                        <p>Visibility:
-                                            {% for i in value.visibility|get_range %}
-                                                <i class="fa fa-star"></i>
-                                            {% endfor %}
-                                        </p>
-                                        <p>Clarity:
-                                            {% for i in value.clarity|get_range %}
-                                                <i class="fa fa-star"></i>
-                                            {% endfor %}
-                                        </p>
-                                         <p>Error:
-                                            {% for i in value.error|get_range %}
-                                                <i class="fa fa-star"></i>
-                                            {% endfor %}
-                                        </p>
-                                        <p>Feedback:
-                                            {% for i in value.feedback|get_range %}
-                                                <i class="fa fa-star"></i>
-                                            {% endfor %}
-                                        </p>
-                                        <p>Cost:
-                                            {% for i in value.cost|get_range %}
-                                                <i class="fa fa-star"></i>
-                                            {% endfor %}
-                                        </p>
-                                        <p>Time:
-                                            {% for i in value.time|get_range %}
-                                                <i class="fa fa-star"></i>
-                                            {% endfor %}
-                                        </p>
-                                        <p>Technical:
-                                            {% for i in value.technical|get_range %}
-                                                <i class="fa fa-star"></i>
-                                            {% endfor %}
-                                        </p>
-                                        <p>Curriculum:
-                                            {% for i in value.curriculum|get_range %}
-                                                <i class="fa fa-star"></i>
-                                            {% endfor %}
-                                        </p>
-                                    {% endif %}
-                                {% endfor %}
+                            {% for category, value in ratings.items %}
+                                <p>{{ category }} : {{ value }}
+                                    {% for i in value|get_range %}
+                                        <i class="fa fa-star"></i>
+                                    {% endfor %}
+
+                                </p>
+
+                            {% endfor %}
                             <a href="{% url 'device_profile'  device.id %}">More Information</a>
                             </div>
                         </div>

@@ -130,31 +130,14 @@ class Profile(models.Model):
 
 class Questionnaire(models.Model):
     """
-        Model to create and store the questionnaire on a per device basis.
+        Creates a survey type which can hold questions
 
         **Attributes**
 
-        user : ForeignKey
-            ForeignKey relationship with logged in user.
-        hardware : ForeignKey
-            ForeignKey relationship with the hardware being evaluated.
-        question1 : PositiveIntegerField
-            Question 1
-        question2 : PositiveIntegerField
-            Question 2
-        question3 : PositiveIntegerField
-            Question 3
-        question4 : PositiveIntegerField
-            Question 4
-        question5 : PositiveIntegerField
-            Question 5
-        question6 : PositiveIntegerField
-            Question 6
-        question7 : PositiveIntegerField
-            Question 7
-        question8 : PositiveIntegerField
-            Question 8
-        """
+        name : Charfield
+            Name of the survey
+
+    """
 
     INPUT_CHOICES = (
         (1, "Strongly Disagree"),
@@ -177,6 +160,17 @@ class Questionnaire(models.Model):
 
 
 class Category(models.Model):
+    """
+        Categories that questions can be asked in. Provides the categories that are calculated for the device scales.
+
+        **Attributes**
+
+        name : Charfield
+            Name of the category
+        survey : ForeignKey
+            Survey that the category belongs to
+
+    """
     name = models.CharField(max_length=400)
     survey = models.ForeignKey(Questionnaire)
 
@@ -185,6 +179,22 @@ class Category(models.Model):
 
 
 class Question(models.Model):
+    """
+        Questions to be displayed in the survey.
+
+        **Attributes**
+
+        questionnaire : ForeignKey
+            Survey that the questions are part of
+        topic : ForeignKey
+            Category the question falls under
+        question_type : Charfield
+            Choose if the question is radio button or text
+        question : Charfield
+            The question to be asked
+
+    """
+
     INPUT_CHOICES = (
         (1, "Strongly Disagree"),
         (2, "Disagree"),
@@ -211,6 +221,19 @@ class Question(models.Model):
 
 
 class Response(models.Model):
+    """
+        Store the results of the questionnaire.
+
+        **Attributes**
+
+        user : ForeignKey
+            User completing the survey
+        survey : ForeignKey
+            The questionnaire being completed
+        hardware : ForeignKey
+            The hardware being evaluated
+
+    """
     user = models.ForeignKey(Profile)
     survey = models.ForeignKey(Questionnaire)
     hardware = models.ForeignKey(Hardware, on_delete=models.CASCADE, null=True)
@@ -220,6 +243,20 @@ class Response(models.Model):
 
 
 class Answer(models.Model):
+    """
+        Answers that are attributed to the survey response.
+        This model is used indirectly. Access through either AnswerText or AnswerRadio.
+
+        **Attributes**
+
+        question : ForeignKey
+            Question being answered
+        response : ForeignKey
+            The set of answers that this belongs to
+        body : TextField
+            Class extensions provide the body for the answer
+
+    """
     question = models.ForeignKey(Question)
     response = models.ForeignKey(Response, null=True)
 

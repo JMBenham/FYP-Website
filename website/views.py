@@ -17,47 +17,33 @@ def index(request):
     Home page view
 
     Outputs:
-        - list_of_devices
         - list_of_ratings
+            - Is a two level dictionary containing all of the hardware that have completed surveys.
+            - Each hardware object is the key to a dictionary containing the survey responses
     """
     list_of_devices = []
-    surveys = Response.objects.all()
     list_of_questionnaires = {}
-    '''
-    for device in questionnaires:
-        list_of_devices.append(Hardware.objects.get(name=device.hardware.name))
-        if device.hardware.name not in list_of_questionnaires.keys():
-            list_of_questionnaires[device.hardware.name] = {"nonthreatening": 1,
-                                                            "engagement": 1,
-                                                            "visibility": 1,
-                                                            "clarity":1,
-                                                            "error":1,
-                                                            "feedback":1,
-                                                            "cost":1,
-                                                            "time":1,
-                                                            "technical":1,
-                                                            "curriculum":1}
+    questionnaire = Questionnaire.objects.get(name='Hardware')
+    answers = AnswerRadio.objects.all()
+    categories = Category.objects.filter(survey=questionnaire)
+    for answer in answers:
+        if answer.response.hardware not in list_of_devices:
+            list_of_devices.append(Hardware.objects.get(name=answer.response.hardware.name))
+        for category in categories:
+            if answer.question.topic == category:
+                if answer.response.hardware not in list_of_questionnaires.keys():
+                    list_of_questionnaires[answer.response.hardware] = {}
+                    list_of_questionnaires[answer.response.hardware][category.name] = int(answer.body)
+                    #Add the value of the question to the running counter
+                else:
+                    if category.name not in list_of_questionnaires[answer.response.hardware].keys():
+                        list_of_questionnaires[answer.response.hardware][category.name] = int(answer.body)
+                    else:
+                        list_of_questionnaires[answer.response.hardware][category.name] += int(answer.body)
+                        list_of_questionnaires[answer.response.hardware][category.name] /= 2
 
-        device_key = list_of_questionnaires[device.hardware.name]
-        device_key['nonthreatening'] = device_key['nonthreatening'] + ((device.question1 + device.question2 + device.question3) / 3) /2
-        device_key['engagement'] = device_key['engagement'] + ((device.question4 +
-                                                                device.question5 +
-                                                                device.question6) / 3) / 2
-
-        device_key['visibility'] = device_key['visibility'] + ((device.question7 + device.question8 + device.question9) / 3) / 2
-        device_key['clarity'] = device_key['clarity'] + ((device.question10 + device.question11 + device.question12) / 3) / 2
-        device_key['error'] = device_key['error'] + ((device.question13 + device.question14 + device.question15) / 3) / 2
-        device_key['feedback'] = device_key['feedback'] + ((device.question16 + device.question17 + device.question18) / 3) / 2
-        device_key['cost'] = device_key['cost'] + ((device.question19 + device.question20 + device.question21) / 3) / 2
-        device_key['time'] = device_key['time'] + ((device.question22 + device.question23 + device.question24) / 3) / 2
-        device_key['technical'] = device_key['technical'] + ((device.question25 + device.question26 + device.question27) / 3) / 2
-        device_key['curriculum'] = device_key['curriculum'] + (( device.question28 + device.question29 + device.question30) / 3) / 2
-
-    print list_of_devices
-    '''
     template= loader.get_template('website/index.html')
     context = {
-        'list_of_devices': list_of_devices,
         'list_of_ratings': list_of_questionnaires
     }
     return HttpResponse(template.render(context, request))
@@ -288,10 +274,16 @@ def device_profile(request, id):
     """
     hardware = Hardware.objects.get(pk = id)
     questionnaires = Response.objects.filter(hardware=hardware)
+    answers = []
+    for survey in questionnaires:
+        answers += AnswerText.objects.filter(response=survey)
+        answers += AnswerRadio.objects.filter(response=survey)
+
     template = loader.get_template('website/device_profile.html')
     context = {
         'device': hardware,
         'surveys': questionnaires,
+        'answers': answers,
     }
     return HttpResponse(template.render(context, request))
 
