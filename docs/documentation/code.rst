@@ -11,17 +11,32 @@ the filtering of database results based on the inputs are easily implemented.
 Models
 ------
 
-There are 4 models that have been included. These provide all of the different values that are available on
+There are 10 models that have been included. These provide all of the different values that are available on
 the site. The models are:
 
-    #. DeviceQuestionnaire
-        * The usability survey that teachers can fill out for each hardware device. It has a relationship with the hardware device that it is filled out for. All the usability surveys for a specific piece of hardware can be retrieved.
+    #. Answer
+        * Base answer class for the different answer types. Has a relation to the question and a response.
+    #. AnswerRadio
+        * Stores the results if the question was answered by radio buttons.
+    #. AnswerText
+        * Stores the result if the question was an open ended text answer.
+    #. Category
+        * The categories of questions which can be asked.
     #. Hardware
         * Defines a piece of physical computing hardware. It has attributes name and image.
     #. Profile
         * An extension of the default django user class. It holds the information relevant to the user such as which state they teach in and their previous programming experience.
+    #. Response
+        * Stores the results of completed questionnaires. Has a relation to the user, the survey and the hardware.
     #. Subject
         * Defines the subjects which teachers can select from that they teach. Defined as a model so that teachers can add their own subjects if it does not appear on the list.
+    #. Question
+        * A specific question to be included on the survey. Has a related questionnaire, category, question type and question text.
+    #. Questionnaire
+        * Defines a set of questions that can be asked. This allows the questionnaire to be changed quickly. For the
+        purposes of this website it is currently hardcoded to a set value.
+
+
 
 Extended descriptions for all of the models can be found in the API reference of this manual.
 
