@@ -186,11 +186,11 @@ class Category(models.Model):
 
 class Question(models.Model):
     INPUT_CHOICES = (
-        ("stronglydisagree", "Strongly Disagree"),
-        ("disagree", "Disagree"),
-        ("neutral", "Neutral"),
-        ("agree", "Agree"),
-        ("stronglyagree", "Strongly Agree"),
+        (1, "Strongly Disagree"),
+        (2, "Disagree"),
+        (3, "Neutral"),
+        (4, "Agree"),
+        (5, "Strongly Agree"),
     )
 
     TEXT = 'text'

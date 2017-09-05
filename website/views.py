@@ -21,7 +21,7 @@ def index(request):
         - list_of_ratings
     """
     list_of_devices = []
-    questionnaires = Questionnaire.objects.all()
+    surveys = Response.objects.all()
     list_of_questionnaires = {}
     '''
     for device in questionnaires:
@@ -248,30 +248,30 @@ def profile(request, id):
     except:
         up = None
 
-    submittedQuestionnaires = Response.objects.filter(user=up)
-    for survey in submittedQuestionnaires:
+    submitted_questionnaires = Response.objects.filter(user=up)
+    for survey in submitted_questionnaires:
         answers += AnswerText.objects.filter(response=survey)
         answers += AnswerRadio.objects.filter(response=survey)
 
     categories = Category.objects.all()
     subjects = up.subjectsTaught.all()
     hardware = up.hardware_devices.all()
-    sizeclass = dict(up.CLASS_SIZE_CHOICES)[up.classSize]
-    techbackground = dict(up.TECH_BACKGROUND_CHOICES)[up.technologyBackground]
-    programmingbackground = dict(up.PROGRAMMING_BACKGROUND_CHOICES)[up.programmingBackground]
+    size_class = dict(up.CLASS_SIZE_CHOICES)[up.classSize]
+    tech_background = dict(up.TECH_BACKGROUND_CHOICES)[up.technologyBackground]
+    programming_background = dict(up.PROGRAMMING_BACKGROUND_CHOICES)[up.programmingBackground]
     template = loader.get_template('website/profile.html')
     context = {
         'user': request.user,
         'remoteuser': u,
         'userprofile': up,
-        'questionnaires': submittedQuestionnaires,
+        'questionnaires': submitted_questionnaires,
         'categories': categories,
         'answers': answers,
         'subjectsTaught': subjects,
         'hardwareUsed': hardware,
-        'class': sizeclass,
-        'techBackground': techbackground,
-        'programmingBackground': programmingbackground,
+        'class': size_class,
+        'techBackground': tech_background,
+        'programmingBackground': programming_background,
     }
     return HttpResponse(template.render(context, request))
 
@@ -287,11 +287,11 @@ def device_profile(request, id):
      - website/device_profile.html
     """
     hardware = Hardware.objects.get(pk = id)
-    questionnaires = DeviceQuestionnaire.objects.filter(hardware=hardware)
+    questionnaires = Response.objects.filter(hardware=hardware)
     template = loader.get_template('website/device_profile.html')
     context = {
         'device': hardware,
-        'surveys':questionnaires,
+        'surveys': questionnaires,
     }
     return HttpResponse(template.render(context, request))
 
