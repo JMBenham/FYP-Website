@@ -36,7 +36,7 @@ class Hardware(models.Model):
         Image associated with the hardware.
     """
     name = models.CharField(max_length=150)
-    imageUrl = models.CharField(max_length=300, default="https://upload.wikimedia.org/wikipedia/commons/f/f8/Question_mark_alternate.svg")
+    imageUrl = models.CharField(max_length=300, default="https://upload.wikimedia.org/wikipedia/commons/3/33/White_square_with_question_mark.png")
 
     class Meta:
         verbose_name_plural = "Hardware"

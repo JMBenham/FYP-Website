@@ -272,18 +272,33 @@ def device_profile(request, id):
     **Template:**\n
      - website/device_profile.html
     """
+
     hardware = Hardware.objects.get(pk = id)
     questionnaires = Response.objects.filter(hardware=hardware)
+    categories = Category.objects.all()
     answers = []
+    answersRadio = []
+    answersAverage = {}
     for survey in questionnaires:
         answers += AnswerText.objects.filter(response=survey)
-        answers += AnswerRadio.objects.filter(response=survey)
+        answersRadio += AnswerRadio.objects.filter(response=survey)
+
+    for answer in answersRadio:
+        if answer.question.topic not in answersAverage.keys():
+            answersAverage[answer.question.topic] = int(answer.body)
+        else:
+            answersAverage[answer.question.topic] += int(answer.body)
+            answersAverage[answer.question.topic] /= 2
+
 
     template = loader.get_template('website/device_profile.html')
     context = {
         'device': hardware,
         'surveys': questionnaires,
+        'categories': categories,
         'answers': answers,
+        'answersRadio': answersRadio,
+        'answersCategories': answersAverage,
     }
     return HttpResponse(template.render(context, request))
 
