@@ -94,12 +94,18 @@ class UserProfileForm(forms.ModelForm):
         )
 
     state = forms.ChoiceField(label="Which state do you primarily teach in?", choices=Profile.STATE_CHOICES)
-    yearLevels = forms.ChoiceField(label="What year levels do you teach?", choices=Profile.YEAR_LEVEL_CHOICES, widget=forms.CheckboxSelectMultiple)
-    subjectsTaught = forms.ModelMultipleChoiceField(label="Which subjects do you teach?", queryset=Subject.objects.all(), widget=forms.CheckboxSelectMultiple)
+    yearLevels = forms.MultipleChoiceField(label="What year levels do you teach?", choices=Profile.YEAR_LEVEL_CHOICES,
+                                   widget=forms.CheckboxSelectMultiple)
+    subjectsTaught = forms.ModelMultipleChoiceField(label="Which subjects do you teach?",
+                                                    queryset=Subject.objects.all(), widget=forms.CheckboxSelectMultiple)
     classSize = forms.ChoiceField(label="What is you average class size?", choices=Profile.CLASS_SIZE_CHOICES)
-    technologyBackground = forms.ChoiceField(label="What is your technology background?", choices=Profile.TECH_BACKGROUND_CHOICES)
-    programmingBackground = forms.ChoiceField(label="What is your programming background?", choices=Profile.PROGRAMMING_BACKGROUND_CHOICES)
-    hardware_devices = forms.ModelMultipleChoiceField(label="Which devices do you use?", queryset=Hardware.objects.all(), widget=forms.CheckboxSelectMultiple)
+    technologyBackground = forms.ChoiceField(label="What is your technology background?",
+                                             choices=Profile.TECH_BACKGROUND_CHOICES)
+    programmingBackground = forms.ChoiceField(label="What is your programming background?",
+                                              choices=Profile.PROGRAMMING_BACKGROUND_CHOICES)
+    hardware_devices = forms.ModelMultipleChoiceField(label="Which devices do you use?",
+                                                      queryset=Hardware.objects.all(),
+                                                      widget=forms.CheckboxSelectMultiple)
     class Meta:
         model = Profile
         fields = ('state', 'yearLevels', 'subjectsTaught', 'classSize', 'technologyBackground', 'programmingBackground', 'hardware_devices')

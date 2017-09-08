@@ -33,8 +33,7 @@ the site. The models are:
     #. Question
         * A specific question to be included on the survey. Has a related questionnaire, category, question type and question text.
     #. Questionnaire
-        * Defines a set of questions that can be asked. This allows the questionnaire to be changed quickly. For the
-        purposes of this website it is currently hardcoded to a set value.
+        * Defines a set of questions that can be asked. This allows the questionnaire to be changed quickly. For the purposes of this website it is currently hardcoded to a set value.
 
 
 

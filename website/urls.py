@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^about/$', views.about, name='about'),
     url(r'^completesurvey/$', views.complete_survey, name='completesurvey'),
     url(r'^profile/(?P<id>\d+)/$', views.profile, name='profile'),
+    url(r'^profileupdate/(?P<id>\d+)/$', views.UserUpdateView.as_view(), name='profileupdate'),
     url(r'^hardware/(?P<id>\d+)/$', views.device_profile, name='device_profile'),
     url(r'^deletesurvey/(?P<id>\d+)/$', views.delete_survey, name='delete_survey'),
     url(r'^login/$',

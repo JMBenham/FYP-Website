@@ -1,0 +1,20 @@
+{% extends 'website/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block body %}
+    <div class="container">
+        <form action="{% url 'profileupdate' user.id %}" class="form-horizontal" method="post">
+            {% crispy form %}
+
+            <div class="col-md-3">
+
+            </div>
+            <div class="col-md-6">
+                <div class="buttonHolder">
+                    <input type="submit" name="submit" value="Save" class="btn btn-default" style="background-color: #1396D7; color:white; width:60%" id="submit-id-submit" />
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

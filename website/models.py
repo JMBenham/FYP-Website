@@ -110,7 +110,7 @@ class Profile(models.Model):
         (2, "Some programming (e.g. I have written some programs to carry out simple tasks)"),
         (3, "Experienced programmer (e.g. I have used programs for computation, automation)"),
         (4, "Expert programmer (e.g. I have worked as a programmer before, contributed" +
-            "code to large projects and/or coded for high level algorithmic computation)"),
+            " code to large projects and/or coded for high level algorithmic computation)"),
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     state = models.CharField(max_length=3,

@@ -3,7 +3,10 @@ from __future__ import unicode_literals
 from django.template import loader, RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
+from django.core.urlresolvers import reverse
 from django.contrib.auth.admin import User
+from django.views.generic import UpdateView
+#from django.views.generic.edit import UpdateView
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Hardware, Profile, Questionnaire, Subject, Response, AnswerRadio, AnswerText, Category
 from .forms import UserForm, UserProfileForm, QuestionnaireForm, SubjectForm, HardwareForm
@@ -11,6 +14,27 @@ from django.shortcuts import render, render_to_response, redirect
 
 
 # Create your views here.
+
+
+class UserUpdateView(UpdateView):
+    form_class = UserProfileForm
+    model = Profile
+    template_name = 'website/register_crispy_update_form.html'
+    pk_url_kwarg = 'id'
+
+    def get(self, request, **kwargs):
+        self.object = Profile.objects.get(user=self.request.user)
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        context = self.get_context_data(object=self.object, form=form)
+        return self.render_to_response(context)
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return HttpResponseRedirect(reverse('profile', kwargs={'id':self.request.user.id}))
+
 
 def index(request):
     """
@@ -340,10 +364,9 @@ def complete_survey(request):
         survey_form = QuestionnaireForm(data=request.POST)
         hardware_form = HardwareForm(data=request.POST)
 
-        print survey_form.errors.as_data()
-
         if survey_form.is_valid():
             user = Profile.objects.get(user=request.user)
+            #Include a test to check if the user has already submitted a survey for the piece of hardware.
             survey = survey_form.save(user)
             survey.save()
 
@@ -374,7 +397,7 @@ def complete_survey(request):
     return HttpResponse(template.render(context, request))
 
 
-@login_required()
+@login_required
 def delete_survey(request, id):
     """Delete the survey referenced by 'id'
 
@@ -391,4 +414,7 @@ def delete_survey(request, id):
         devicesurvey.delete()
 
     return redirect('profile', id=user.id)
+
+
+
 

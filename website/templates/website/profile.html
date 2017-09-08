@@ -23,6 +23,8 @@
                 {% endfor %}
             </ul>
 
+            <a class="btn btn-default collapsed pull-right" href="{% url 'profileupdate' user.id %}">Edit profile</a>
+
             </br>
             <h4>You have submitted questionnaires for the following hardware.</h4>
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
