@@ -120,8 +120,8 @@ class Profile(models.Model):
                                   null=True)
     subjectsTaught = models.ManyToManyField(Subject, blank=True)
     classSize = models.IntegerField(choices=CLASS_SIZE_CHOICES, null=True)
-    technologyBackground = models.IntegerField(choices=TECH_BACKGROUND_CHOICES, default="Expert")
-    programmingBackground = models.IntegerField(choices=PROGRAMMING_BACKGROUND_CHOICES, default="Expert")
+    technologyBackground = models.IntegerField(choices=TECH_BACKGROUND_CHOICES, default=1)
+    programmingBackground = models.IntegerField(choices=PROGRAMMING_BACKGROUND_CHOICES, default=1)
     hardware_devices = models.ManyToManyField(Hardware, blank=True)
 
     def __unicode__(self):
