@@ -20,12 +20,30 @@ class CategoryInLine(admin.TabularInline):
 
 
 class SurveyAdmin(admin.ModelAdmin):
+    """
+    Survey admin
+
+    Display the categories and questions in the admin interface
+
+    Output
+        - Category
+        - Question
+    """
     inlines = [CategoryInLine, QuestionInLine]
 
 
 class AnswerBaseInline(admin.StackedInline):
+    """
+    Answer base admin
+
+    Format the answers
+
+    Output
+        - Question : Read-only
+        - Body : Read-only
+    """
     fields = ('question', 'body')
-    #readonly_fields = ('question', )
+    readonly_fields = ('question', 'body')
     extra = 0
 
 
@@ -38,6 +56,15 @@ class AnswerRadioInline(AnswerBaseInline):
 
 
 class ResponseAdmin(admin.ModelAdmin):
+    """
+    Response admin
+
+    Display the answers for both text and radio in the admin interface
+
+    Output
+        - AnswerText
+        - AnswerRadio
+    """
     list_display = ('user', 'hardware')
     inlines = [AnswerTextInline, AnswerRadioInline]
 

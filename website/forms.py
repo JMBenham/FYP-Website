@@ -112,6 +112,19 @@ class UserProfileForm(forms.ModelForm):
 
 
 class QuestionnaireForm(forms.ModelForm):
+    """
+        Questionnaire form
+        - Use crispy forms to display the hardware questionnaire
+
+        Inputs:
+            - hardware : Dropdown
+            - questionText : Textbox
+            - questionRadio : Radio buttons
+
+        Save:
+            - Save the questions to answer objects
+
+    """
     def __init__(self, *args, **kwargs):
         question_list = []
         super(QuestionnaireForm, self).__init__(*args, **kwargs)

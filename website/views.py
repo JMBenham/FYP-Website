@@ -17,6 +17,14 @@ from django.shortcuts import render, render_to_response, redirect
 
 
 class UserUpdateView(UpdateView):
+    """
+    Update user view
+    - Allow users to update their information after they have registered
+
+    Outputs:
+        - Profile object
+    """
+
     form_class = UserProfileForm
     model = Profile
     template_name = 'website/register_crispy_update_form.html'

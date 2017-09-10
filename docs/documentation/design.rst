@@ -109,10 +109,6 @@ The same heuristics cannot always be applied to different situations.
 
 This usability scale is built on a number of different usability scales that have previously been developed.
 
-SUS quick and dirty usability scale
-Kolling heursitcs
-Ssembagui
-
 Surveys
 ~~~~~~~
 

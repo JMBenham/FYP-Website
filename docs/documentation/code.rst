@@ -36,7 +36,6 @@ the site. The models are:
         * Defines a set of questions that can be asked. This allows the questionnaire to be changed quickly. For the purposes of this website it is currently hardcoded to a set value.
 
 
-
 Extended descriptions for all of the models can be found in the API reference of this manual.
 
 Views
@@ -54,6 +53,7 @@ website. The list of pages and their urls are:
   - about : "/about/"
   - complete_survey : "/completesurvey/"
   - delete_survey : "/deletesurvey/<Numeric ID>/"
+  - UserUpdateView : "/profileupdate/<Numeric ID>/"
   
 A number of views are implemented directly from the Django templates. These are used for extra password handling functions.
 
@@ -99,7 +99,8 @@ for easily marking up the form code to generate HTML. This means that the form m
 manually in the HTML templates. All changes to the layout of the forms should therefore be made directlyin the forms
 file.
 
-multiselectfield
+django-multiselectfield allows the selection of more than one option from a list of choices. This is used to allow
+teachers to select more than one year level that they teach in a simple format.
 
 
 CSS and JavaScript
@@ -108,15 +109,15 @@ CSS and JavaScript
 Bootstrap
 ~~~~~~~~~
 
-Bootstrap was used to quickly develop the necessary front end for the website.
+Bootstrap is a web development framework that provides HTML, CSS and JS for faster development of web-pages. This
+website uses bootstrap to control the layout for both desktop and mobile devices, provide simple animations for modals
+and dropdowns, as well as defining most of the layout elements used on the page.
 
-Bootstrap version == 3.2.1
-
-Elements used from bootstrap for the front-end design include.
+The currently implemented version of Bootstrap is 3.2.1.
 
 GSDK
 ~~~~
 
-The front end of the website is built on CSS files and JavaScript in the GSDK toolkit from Creative Tim.
-These files extend the CSS files provided in the default bootstrap installation. The addition of these files give
-the site a more modern and finished feel.
+The default CSS from Bootstrap is modified with CSS files and JavaScript in the GSDK toolkit from Creative Tim.
+The addition of these files give the site a more modern and finished feel. The CSS and JS files are included in the
+static files folder, and take precedence over those in the default Bootstrap files.
