@@ -7,13 +7,14 @@ from django.contrib.auth.admin import User
 from django.contrib.auth.forms import PasswordResetForm
 from django.utils.safestring import mark_safe
 
+Field.template = 'crispy_forms/field_update.html'
+
 
 class UserForm(forms.ModelForm):
     """
         User form
 
         Inputs:
-
             - first_name : Text
             - last_name : Text
             - username : Text
@@ -77,27 +78,27 @@ class UserProfileForm(forms.ModelForm):
         self.helper.field_class = 'col-md-6'
         self.helper.form_method = 'post'
         self.helper.form_action = 'register'
+        self.helper.form_show_labels = True
         self.helper.form_tag = False
-
         self.helper.layout = Layout(
             Fieldset(
-                'Some information about your technology usage: ',
-                'state',
-                'yearLevels',
-
-                'subjectsTaught',
-                'classSize',
-                'technologyBackground',
-                'programmingBackground',
-                'hardware_devices',
+                'Some information about you',
             ),
+            Field('state',),
+            Field('yearLevels',),
+            Field('subjectsTaught',),
+            Field('classSize',),
+            Field('technologyBackground',),
+            Field('programmingBackground',),
+            Field('hardware_devices')
         )
 
     state = forms.ChoiceField(label="Which state do you primarily teach in?", choices=Profile.STATE_CHOICES)
     yearLevels = forms.MultipleChoiceField(label="What year levels do you teach?", choices=Profile.YEAR_LEVEL_CHOICES,
-                                   widget=forms.CheckboxSelectMultiple)
+                                           widget=forms.CheckboxSelectMultiple)
     subjectsTaught = forms.ModelMultipleChoiceField(label="Which subjects do you teach?",
-                                                    queryset=Subject.objects.all(), widget=forms.CheckboxSelectMultiple)
+                                                    queryset=Subject.objects.all(),
+                                                    widget=forms.CheckboxSelectMultiple)
     classSize = forms.ChoiceField(label="What is you average class size?", choices=Profile.CLASS_SIZE_CHOICES)
     technologyBackground = forms.ChoiceField(label="What is your technology background?",
                                              choices=Profile.TECH_BACKGROUND_CHOICES)
@@ -153,23 +154,27 @@ class QuestionnaireForm(forms.ModelForm):
                 Submit('submit', 'Submit', css_class='button white pull-right')
             )
         )
-        for q in self.questionnaire.questions():
-            question_list.append(q.pk)
-            if q.question_type == Question.TEXT:
-                self.fields["question_%d" %q.pk] = forms.CharField(label=q.question, widget=forms.Textarea)
-                self.helper.layout[4].append('question_%d' % q.pk)
-            elif q.question_type == Question.RADIO:
-                self.fields["question_%d" % q.pk] = forms.ChoiceField(label=q.question,
-                                                                      choices=q.INPUT_CHOICES)
-                self.helper.layout[4].append(InlineRadios('question_%d' %q.pk))
+        categories = Category.objects.all()
+        for category in categories:
+            self.helper.layout[4].append(HTML("""<h5>""" + category.name + """</h5>"""))
+            for q in self.questionnaire.questions():
+                if q.topic == category:
+                    question_list.append(q.pk)
+                    if q.question_type == Question.TEXT:
+                        self.fields["question_%d" %q.pk] = forms.CharField(label=q.question, widget=forms.Textarea)
+                        self.helper.layout[4].append('question_%d' % q.pk)
+                    elif q.question_type == Question.RADIO:
+                        self.fields["question_%d" % q.pk] = forms.ChoiceField(label=q.question,
+                                                                              choices=q.INPUT_CHOICES)
+                        self.helper.layout[4].append(InlineRadios('question_%d' %q.pk))
 
-            if q.topic:
-                classes = self.fields["question_%d" % q.pk].widget.attrs.get("class")
-                if classes:
-                    self.fields["question_%d" % q.pk].widget.attrs["class"] = classes + (" cat_%s" % q.topic.name)
-                else:
-                    self.fields["question_%d" % q.pk].widget.attrs["class"] = (" cat_%s" % q.topic.name)
-                self.fields["question_%d" % q.pk].widget.attrs["category"] = q.topic.name
+                    if q.topic:
+                        classes = self.fields["question_%d" % q.pk].widget.attrs.get("class")
+                        if classes:
+                            self.fields["question_%d" % q.pk].widget.attrs["class"] = classes + (" cat_%s" % q.topic.name)
+                        else:
+                            self.fields["question_%d" % q.pk].widget.attrs["class"] = (" cat_%s" % q.topic.name)
+                        self.fields["question_%d" % q.pk].widget.attrs["category"] = q.topic.name
     hardware = forms.ModelChoiceField(
         label="Which hardware do you use?",
         queryset=Hardware.objects.all(),

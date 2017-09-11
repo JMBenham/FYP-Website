@@ -135,7 +135,6 @@ def register(request):
 
         elif hardware_form.is_valid():
             hardware = hardware_form.save(commit=False)
-            hardware.name = hardware_form.name.title()
             hardware.imageUrl = "https://upload.wikimedia.org/wikipedia/commons/3/33/White_square_with_question_mark.png"
 
             hardware.save()
@@ -366,6 +365,7 @@ def complete_survey(request):
      - website/submit_survey.html
     """
 
+
     # Only process data if the request is a POST method
     if request.method == 'POST':
         # Attempt to take the information from the form
@@ -397,6 +397,7 @@ def complete_survey(request):
         survey_form = QuestionnaireForm()
         hardware_form = HardwareForm()
 
+
     template = loader.get_template('website/submit_survey.html')
     context = {
         'survey_form': survey_form,
@@ -415,7 +416,7 @@ def delete_survey(request, id):
     **Redirect:**\n
      - website/profile.html
     """
-    devicesurvey = DeviceQuestionnaire.objects.get(pk=id)
+    devicesurvey = Response.objects.get(pk=id)
     user = request.user
 
     if devicesurvey.user.id == user.id:

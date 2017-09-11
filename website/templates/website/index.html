@@ -90,13 +90,13 @@
             {% if list_of_ratings %}
                 {% for device, ratings in list_of_ratings.items %}
                     <div class="col-md-3">
-                        <div class="panel panel-default">
+                        <div class="panel panel-default" style="max-width: 350px; border: none">
                             <div class="panel-heading">
-                                <h3 class="panel-title">{{ device.name }}</h3>
+                                <h3 class="panel-title" style="text-align: center">{{ device.name }}</h3>
                             </div>
                             <div class="panel-body" >
                                 <a href="{% url 'device_profile'  device.id %}">
-                                    <img src="{{ device.imageUrl }}" class="img-thumbnail">
+                                    <img src="{{ device.imageUrl }}" class="img-thumbnail" style="max-height: 300px; border: none">
                                 </a>
                                 <br></br>
                             {% for category, value in ratings.items %}
