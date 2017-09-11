@@ -14,7 +14,9 @@ import os
 import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+here = lambda *x: os.path.realpath(os.path.join(os.path.abspath(os.path.dirname(__file__)), *x))
+BASE_DIR = here("..", "..")
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -22,11 +24,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = '5w&wk4xoi5qxd$=93bcl49n!s95+a+5an4i!&ooi*-^s3$iq@n'
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '5w&wk4xoi5qxd$=93bcl49n!s95+a+5an4i!&ooi*-^s3$iq@n')
+SECRET_KEY = '5w&wk4xoi5qxd$=93bcl49n!s95+a+5an4i!&ooi*-^s3$iq@n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
-DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -46,7 +47,6 @@ INSTALLED_APPS = [
     'website',
     'multiselectfield',
     'crispy_forms',
-
 ]
 
 
@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'DjangoBackend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, '../../db.sqlite3'),
     }
 }
 
@@ -131,7 +131,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'staticfiles'))
+STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, '../../staticfiles'))
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
