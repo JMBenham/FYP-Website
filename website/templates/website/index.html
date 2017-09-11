@@ -90,11 +90,11 @@
             {% if list_of_ratings %}
                 {% for device, ratings in list_of_ratings.items %}
                     <div class="col-md-3">
-                        <div class="panel panel-default" style="max-width: 350px; border: none">
-                            <div class="panel-heading">
+                        <div class="panel panel-default" style="max-width: 350px; border: none; background-color: transparent">
+                            <div class="panel-heading" style="background-color: transparent; border: none">
                                 <h3 class="panel-title" style="text-align: center">{{ device.name }}</h3>
                             </div>
-                            <div class="panel-body" >
+                            <div class="panel-body" style="border: none">
                                 <a href="{% url 'device_profile'  device.id %}">
                                     <img src="{{ device.imageUrl }}" class="img-thumbnail" style="max-height: 300px; border: none">
                                 </a>

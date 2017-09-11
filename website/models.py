@@ -113,7 +113,7 @@ class Profile(models.Model):
             " code to large projects and/or coded for high level algorithmic computation)"),
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    state = models.CharField(max_length=3,
+    state = models.CharField(max_length=30,
                              choices=STATE_CHOICES,
                              default='VIC')
     yearLevels = MultiSelectField(choices=YEAR_LEVEL_CHOICES,

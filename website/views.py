@@ -41,7 +41,7 @@ class UserUpdateView(UpdateView):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
-        return HttpResponseRedirect(reverse('profile', kwargs={'id':self.request.user.id}))
+        return HttpResponseRedirect(reverse('profile', kwargs={'id': self.request.user.id}))
 
 
 def index(request):
@@ -259,6 +259,7 @@ def profile(request, id):
     u = User.objects.get(pk=id)
 
     answers = []
+    yearlevels = []
 
     try:
         up = Profile.objects.get(user=u)
@@ -270,9 +271,13 @@ def profile(request, id):
         answers += AnswerText.objects.filter(response=survey)
         answers += AnswerRadio.objects.filter(response=survey)
 
+    for year in up.yearLevels:
+        yearlevels.append(dict(up.YEAR_LEVEL_CHOICES)[int(year)])
+
     categories = Category.objects.all()
     subjects = up.subjectsTaught.all()
     hardware = up.hardware_devices.all()
+
     size_class = dict(up.CLASS_SIZE_CHOICES)[up.classSize]
     tech_background = dict(up.TECH_BACKGROUND_CHOICES)[up.technologyBackground]
     programming_background = dict(up.PROGRAMMING_BACKGROUND_CHOICES)[up.programmingBackground]
@@ -282,6 +287,7 @@ def profile(request, id):
         'remoteuser': u,
         'userprofile': up,
         'questionnaires': submitted_questionnaires,
+        'yearlevels': yearlevels,
         'categories': categories,
         'answers': answers,
         'subjectsTaught': subjects,

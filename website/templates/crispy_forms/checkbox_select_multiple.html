@@ -6,7 +6,13 @@
 
     {% for choice in field.field.choices %}
 
-      {% if not inline_class %}<div class="checkbox">{% endif %}
+      {% if not inline_class %}
+          {% if choice.0 in field.value or choice.0|stringformat:"s" in field.value or choice.0|stringformat:"s" == field.value|default_if_none:""|stringformat:"s" %}
+              <div class="checkbox checked">
+          {% else %}
+              <div class="checkbox">
+          {% endif %}
+      {% endif %}
         <label class="{% if inline_class %}checkbox-{{ inline_class }}{% endif %}">
             <span class="icons"><span class="first-icon fa fa-square-o"></span><span class="second-icon fa fa-check-square-o"></span></span>
             <input type="checkbox"{% if choice.0 in field.value or choice.0|stringformat:"s" in field.value or choice.0|stringformat:"s" == field.value|default_if_none:""|stringformat:"s" %} checked="checked"{% endif %} name="{{ field.html_name }}" id="id_{{ field.html_name }}_{{ forloop.counter }}" value="{{ choice.0|unlocalize }}" {{ field.field.widget.attrs|flatatt }}>{{ choice.1|unlocalize }}

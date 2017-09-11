@@ -3,29 +3,79 @@
 {% block body %}
     <div class="container">
         {% if remoteuser == user %}
-            <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+            <h1 style="text-align: center">{{ user.first_name }} {{ user.last_name }}</h1>
 
-            <p> State: {{ userprofile.state }} </p>
-            <p> Year Levels: {{ userprofile.yearLevels }} </p>
-            <h4>You teach the following subjects.</h4>
-            <ul>
-                {% for subject in subjectsTaught %}
-                    <li>{{ subject.subject }}</li>
-                {% endfor %}
-            </ul>
-            <p> Class Size: {{ class }} </p>
-            <p> Technology Background: {{ techBackground }} </p>
-            <p> Programming Background: {{ programmingBackground }} </p>
-            <h4>You use the following hardware.</h4>
-            <ul>
-                {% for device in hardwareUsed %}
-                    <li>{{ device.name }}</li>
-                {% endfor %}
-            </ul>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">State</div>
+                    <div class="panel-body">{{ userprofile.state }}</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Year Levels</div>
+                    <ul class="list-group">
+                        {% for year in yearlevels %}
+                            <li class="list-group-item">{{ year }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="row"></div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Subjects</div>
+                    <ul class="list-group">
+                        {% for subject in subjectsTaught %}
+                            <li class="list-group-item">{{ subject.subject }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Class Size</div>
+                    <div class="panel-body">
+                        {{ class }}
+                    </div>
+                </div>
+            </div>
+            <div class="row"></div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Technology Background</div>
+                    <div class="panel-body">
+                        {{ techBackground }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Programming Background</div>
+                    <div class="panel-body">
+                        {{ programmingBackground }}
+                    </div>
+                </div>
+            </div>
+            <div class="row"></div>
+
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Hardware</div>
+                    <ul class="list-group">
+                        {% for device in hardwareUsed %}
+                            <li class="list-group-item">{{ device.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row"></div>
 
             <a class="btn btn-default collapsed pull-right" href="{% url 'profileupdate' user.id %}">Edit profile</a>
 
-            </br>
+            <div class="row"></div>
+
             <h4>You have submitted questionnaires for the following hardware.</h4>
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                 {% for response in questionnaires %}
