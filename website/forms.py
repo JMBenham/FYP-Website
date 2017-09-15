@@ -112,6 +112,75 @@ class UserProfileForm(forms.ModelForm):
         fields = ('state', 'yearLevels', 'subjectsTaught', 'classSize', 'technologyBackground', 'programmingBackground', 'hardware_devices')
 
 
+class DeviceFilterForm(forms.ModelForm):
+    """
+        Device Filter form
+
+        - For filtering the surveys on the main page. Added options to the dropdown boxes for all
+
+        Inputs:
+            - state : Dropdown
+            - yearLevels : Checkbox
+            - subjectsTaught : Checkbox
+            - classSize : Dropdown
+            - technologyBackground : Dropdown
+            - programmingBackground : Dropdown
+            - hardware_devices : Checkbox
+
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(DeviceFilterForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = "id-filter_form"
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-4'
+        self.helper.field_class = 'col-md-6'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'index'
+        self.helper.form_show_labels = True
+        self.helper.form_tag = True
+
+        self.use_required_attribute=True
+
+        self.fields['state'].required = False
+        self.fields['yearLevels'].required = False
+        self.fields['subjectsTaught'].required = False
+        self.fields['classSize'].required = False
+        self.fields['technologyBackground'].required = False
+        self.fields['programmingBackground'].required = False
+
+        self.helper.layout = Layout(
+            Field('state', template='crispy_forms/field_noerrors.html'),
+            Field('yearLevels',),
+            Field('subjectsTaught',),
+            Field('classSize',template='crispy_forms/field_noerrors.html'),
+            Field('technologyBackground',template='crispy_forms/field_noerrors.html'),
+            Field('programmingBackground',template='crispy_forms/field_noerrors.html'),
+            ButtonHolder(
+                Submit('submit', 'Submit', css_class='button white pull-right')
+            )
+        )
+
+
+    state = forms.ChoiceField(label="State", choices=(('ALL', 'All'),) + Profile.STATE_CHOICES)
+
+    yearLevels = forms.MultipleChoiceField(label="Year Levels", choices=Profile.YEAR_LEVEL_CHOICES,
+                                           widget=forms.CheckboxSelectMultiple)
+    subjectsTaught = forms.ModelMultipleChoiceField(label="Subjects",
+                                                    queryset=Subject.objects.all(),
+                                                    widget=forms.CheckboxSelectMultiple)
+    classSize = forms.ChoiceField(label="Class Size", choices=((0, 'All'),) + Profile.CLASS_SIZE_CHOICES)
+    technologyBackground = forms.ChoiceField(label="Technology Background",
+                                             choices=((0, 'All'),) + Profile.TECH_BACKGROUND_CHOICES)
+    programmingBackground = forms.ChoiceField(label="Programming Background",
+                                              choices=((0, 'All'),) + Profile.PROGRAMMING_BACKGROUND_CHOICES)
+
+    class Meta:
+        model = Profile
+        fields = ('state', 'yearLevels', 'subjectsTaught', 'classSize', 'technologyBackground', 'programmingBackground')
+
+
 class QuestionnaireForm(forms.ModelForm):
     """
         Questionnaire form

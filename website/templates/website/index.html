@@ -2,9 +2,12 @@
 
 {% load static %}
 {% load website_extras %}
+{% load crispy_forms_tags %}
+
+
 
 {% block navbar %}
-    <nav class="navbar navbar-default navbar-fixed-top navbar-transparent" role="navigation"> <!--<div class="navbar navbar-inverse navbar-static-top">-->
+    <nav class="navbar navbar-default navbar-fixed-top navbar-transparent" role="navigation">
             <div class="container" style="padding-top: 0px">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu" aria-expanded="false">
@@ -77,6 +80,7 @@
         </nav>
 {% endblock %}
 
+
 {% block header_background %}
         <div class="blurred-container">
             <div class="motto">Find Your Tech</div>
@@ -86,6 +90,27 @@
 
 {% block body %}
     <div class="container" style="padding-top: 50px" xmlns="http://www.w3.org/1999/html">
+        <div class="row">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            Filters
+                            <a class="btn btn-default collapsed pull-right" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <span class="caret"></span>
+                            </a>
+                            <br></br>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            {% crispy filter %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             {% if list_of_ratings %}
                 {% for device, ratings in list_of_ratings.items %}

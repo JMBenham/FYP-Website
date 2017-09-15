@@ -9,8 +9,10 @@ from django.views.generic import UpdateView
 #from django.views.generic.edit import UpdateView
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Hardware, Profile, Questionnaire, Subject, Response, AnswerRadio, AnswerText, Category
-from .forms import UserForm, UserProfileForm, QuestionnaireForm, SubjectForm, HardwareForm
+from .forms import UserForm, UserProfileForm, QuestionnaireForm, SubjectForm, HardwareForm, DeviceFilterForm
 from django.shortcuts import render, render_to_response, redirect
+import itertools
+
 
 
 # Create your views here.
@@ -55,8 +57,62 @@ def index(request):
     """
     list_of_devices = []
     list_of_questionnaires = {}
+
+    if request.method == 'POST':
+        filter_form = DeviceFilterForm(data=request.POST)
+
+        filter_data_dict = dict(filter_form.data.iterlists())
+
+        stateFilter = filter_data_dict['state'][0]
+        try:
+            yearLevelsFilter = filter_data_dict['yearLevels']
+            #print yearLevelsFilter
+        except:
+            yearLevelsFilter = ""
+
+        try:
+            subjectsTaughtFilter = filter_data_dict['subjectsTaught']
+        except:
+            subjectsTaughtFilter = ""
+
+        classSizeFilter = filter_data_dict['classSize'][0]
+        techBackgroundFilter = filter_data_dict['technologyBackground'][0]
+        programBackgroundFilter = filter_data_dict['programmingBackground'][0]
+
+        if stateFilter != 'ALL':
+            users = Profile.objects.filter(state=stateFilter).distinct()
+        else:
+            users = Profile.objects.all()
+
+        #TODO: Fix filtering on year levels
+        """
+        if yearLevelsFilter != "":
+            print yearLevelsFilter
+            users = users.filter(yearLevels__contains=yearLevelsFilter).distinct()
+            print users
+            """
+        if subjectsTaughtFilter != "":
+            users = users.filter(subjectsTaught__in=Subject.objects.filter(id__in=subjectsTaughtFilter)).distinct()
+        if classSizeFilter != '0':
+            users = users.filter(classSize=classSizeFilter).distinct()
+        if techBackgroundFilter != '0':
+            users = users.filter(technologyBackground=techBackgroundFilter).distinct()
+        if programBackgroundFilter != '0':
+            users = users.filter(programmingBackground=programBackgroundFilter).distinct()
+
+        answers = []
+        for user in users:
+            responses = Response.objects.filter(user=user)
+            for response in responses:
+                query_answers = AnswerRadio.objects.filter(response=response)
+                for answer in query_answers:
+                    answers.append(answer)
+
+    else:
+        filter_form = DeviceFilterForm()
+        answers = AnswerRadio.objects.all()
+
     questionnaire = Questionnaire.objects.get(name='Hardware')
-    answers = AnswerRadio.objects.all()
     categories = Category.objects.filter(survey=questionnaire)
     for answer in answers:
         if answer.response.hardware not in list_of_devices:
@@ -76,7 +132,8 @@ def index(request):
 
     template= loader.get_template('website/index.html')
     context = {
-        'list_of_ratings': list_of_questionnaires
+        'list_of_ratings': list_of_questionnaires,
+        'filter': filter_form,
     }
     return HttpResponse(template.render(context, request))
 
@@ -120,17 +177,17 @@ def register(request):
             # Now sort out the UserProfile instance.
             # Since we need to set the user attribute ourselves, we set commit=False.
             # This delays saving the model until we're ready to avoid integrity problems.
-            profile = profile_form.save(commit=False)
-            profile.user = user
+            userprofile = profile_form.save(commit=False)
+            userprofile.user = user
 
-            profile.save()
+            userprofile.save()
             profile_form.save_m2m()
 
             # Update our variable to tell the template customRegistration was successful.
             registered = True
 
         elif subject_form.is_valid():
-            subject = subject_form.save()
+            subject_form.save()
             return redirect('register')
 
         elif hardware_form.is_valid():
@@ -402,7 +459,6 @@ def complete_survey(request):
     else:
         survey_form = QuestionnaireForm()
         hardware_form = HardwareForm()
-
 
     template = loader.get_template('website/submit_survey.html')
     context = {

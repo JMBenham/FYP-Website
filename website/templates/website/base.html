@@ -15,17 +15,11 @@
     <link rel="stylesheet" href="{% static "website/css/ct-navbar.css" %}"></link>
     <link rel="stylesheet" href="{% static "website/css/font-awesome.css" %}"></link>
 
-    <!-- jQuery -->
-    <script src="{% static "website/js/jquery-1.10.2.js" %}"></script>
-    <!-- Bootstrap JS -->
-    <script src="{% static "website/js/bootstrap.min.js" %}"></script>
-    <script src="{% static "website/js/ct-navbar.js" %}"></script>
-    <script src="{% static "website/js/gsdk-checkbox.js" %}"></script>
 </head>
 <body>
     {% block navbar %}
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation"> <!--<div class="navbar navbar-inverse navbar-static-top">-->
-            <div class="container" style="padding-top: 0px">
+            <div class="container" style="padding-top: 0">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
@@ -123,6 +117,13 @@
             </div>
         </div>
     </footer>
+
+    <!-- jQuery -->
+    <script src="{% static "website/js/jquery-1.10.2.js" %}"></script>
+    <!-- Bootstrap JS -->
+    <script src="{% static "website/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "website/js/ct-navbar.js" %}"></script>
+    <script src="{% static "website/js/gsdk-checkbox.js" %}"></script>
 
 
 </body>
