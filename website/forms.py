@@ -152,8 +152,8 @@ class DeviceFilterForm(forms.ModelForm):
 
         self.helper.layout = Layout(
             Field('state', template='crispy_forms/field_noerrors.html'),
-            Field('yearLevels',),
-            Field('subjectsTaught',),
+            Field('yearLevels', template='crispy_forms/field_noerrors.html'),
+            Field('subjectsTaught', template='crispy_forms/field_noerrors.html'),
             Field('classSize',template='crispy_forms/field_noerrors.html'),
             Field('technologyBackground',template='crispy_forms/field_noerrors.html'),
             Field('programmingBackground',template='crispy_forms/field_noerrors.html'),
