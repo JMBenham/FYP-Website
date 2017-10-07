@@ -85,12 +85,13 @@ def index(request):
             users = Profile.objects.all()
 
         #TODO: Fix filtering on year levels
-        """
+        
+        query = Q()
+        for element in yearLevelsFilter:
+            query = query | Q(yearLevels__contains=element)
+
         if yearLevelsFilter != "":
-            print yearLevelsFilter
-            users = users.filter(yearLevels__contains=yearLevelsFilter).distinct()
-            print users
-            """
+            users = users.filter(query).distinct()
         if subjectsTaughtFilter != "":
             users = users.filter(subjectsTaught__in=Subject.objects.filter(id__in=subjectsTaughtFilter)).distinct()
         if classSizeFilter != '0':
