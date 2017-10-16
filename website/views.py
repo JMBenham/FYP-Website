@@ -11,7 +11,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Hardware, Profile, Questionnaire, Subject, Response, AnswerRadio, AnswerText, Category
 from .forms import UserForm, UserProfileForm, QuestionnaireForm, SubjectForm, HardwareForm, DeviceFilterForm
 from django.shortcuts import render, render_to_response, redirect
-import itertools
+from django.db.models import Q
 
 
 
@@ -84,8 +84,6 @@ def index(request):
         else:
             users = Profile.objects.all()
 
-        #TODO: Fix filtering on year levels
-        
         query = Q()
         for element in yearLevelsFilter:
             query = query | Q(yearLevels__contains=element)
